@@ -718,7 +718,7 @@ function updateGuide(id){
   $('#guide-bar').classList.add('visible');
 }
 // hook into the existing act observer
-const guideObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)updateGuide(e.target.id)}),{threshold:.34});
+const guideObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.target.id!==currentActId){stopNarration();updateGuide(e.target.id)}}),{threshold:.34});
 acts.forEach(a=>guideObs.observe(a));
 updateGuide('arrival');
 
@@ -747,9 +747,15 @@ function trHighlight(idx){
 function trHide(){trBar.classList.remove('active');trActive=false;trWords.innerHTML='';trCurrentIdx=-1}
 
 // ── narration engine with transcript ──
-let autoNarrate=false,lastNarratedAct='',narrating=false;
+let autoNarrate=false,lastNarratedAct='',narrating=false,activeAudio=null;
+function stopNarration(){
+  if('speechSynthesis'in window)speechSynthesis.cancel();
+  clearTimeout(trAnimFrame);
+  if(activeAudio){try{activeAudio.pause();activeAudio.src=''}catch(e){};activeAudio=null}
+  narrating=false;trHide();
+}
 function narrateText(text,cb){
-  if(narrating)return;narrating=true;
+  stopNarration();narrating=true;
   const words=text.split(/\s+/).filter(w=>w.length>0);
   trShow(words);
   // try ElevenLabs first
@@ -757,19 +763,20 @@ function narrateText(text,cb){
   .then(res=>{if(!res.ok)throw new Error();return res.blob()})
   .then(blob=>{
     const audio=new Audio(URL.createObjectURL(blob));
-    const duration=words.length*0.28; // estimate ~280ms per word
+    activeAudio=audio;
+    const duration=words.length*0.28;
     audio.onplay=()=>{
       let i=0;
       const step=()=>{
-        if(!trActive||i>=words.length){narrating=false;setTimeout(trHide,800);return}
+        if(!trActive||i>=words.length){narrating=false;activeAudio=null;setTimeout(trHide,800);return}
         trHighlight(i);i++;
         const interval=(audio.duration||duration)/words.length*1000;
         trAnimFrame=setTimeout(step,interval);
       };step();
     };
-    audio.onended=()=>{clearTimeout(trAnimFrame);narrating=false;if(cb)cb();setTimeout(trHide,1200)};
-    audio.onerror=()=>{narrating=false;trHide();narrateBrowser(text,words,cb)};
-    audio.play().catch(()=>{narrating=false;trHide()});
+    audio.onended=()=>{clearTimeout(trAnimFrame);narrating=false;activeAudio=null;if(cb)cb();setTimeout(trHide,1200)};
+    audio.onerror=()=>{narrating=false;activeAudio=null;trHide();narrateBrowser(text,words,cb)};
+    audio.play().catch(()=>{narrating=false;activeAudio=null;trHide()});
   })
   .catch(()=>{narrating=false;narrateBrowser(text,words,cb)});
 }
@@ -804,13 +811,13 @@ $('#auto-narrate-btn').onclick=()=>{
   $('#auto-narrate-btn').classList.toggle('auto-on',autoNarrate);
   toast(autoNarrate?'Auto narration on':'Auto narration off');
   if(autoNarrate){lastNarratedAct=currentActId;narrateAct(currentActId)}
-  else{speechSynthesis.cancel();clearTimeout(trAnimFrame);narrating=false;trHide()}
+  else{stopNarration()}
 };
 // auto-narrate on act change
 const autoNarObs=new IntersectionObserver(es=>es.forEach(e=>{
   if(e.isIntersecting&&autoNarrate&&e.target.id!==lastNarratedAct){
     lastNarratedAct=e.target.id;
-    speechSynthesis.cancel();clearTimeout(trAnimFrame);narrating=false;
+    stopNarration();
     setTimeout(()=>narrateAct(e.target.id),400);
   }
 }),{threshold:.45});
