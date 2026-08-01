@@ -739,10 +739,11 @@ function trHighlight(idx){
 function trHide(){trBar.classList.remove('active');trActive=false;trWords.innerHTML='';trCurrentIdx=-1}
 
 // ── narration engine with transcript ──
-let autoNarrate=false,lastNarratedAct='',narrating=false,activeAudio=null,narGeneration=0,narAbort=null;
+let autoNarrate=false,lastNarratedAct='',narrating=false,activeAudio=null,narGeneration=0,narAbort=null,activeUtterance=null;
 function stopNarration(){
   narGeneration++;
   if('speechSynthesis'in window)speechSynthesis.cancel();
+  activeUtterance=null;
   clearTimeout(trAnimFrame);
   if(narAbort){try{narAbort.abort()}catch(e){};narAbort=null}
   if(activeAudio){try{activeAudio.pause();activeAudio.currentTime=0;activeAudio.src=''}catch(e){};activeAudio=null}
@@ -780,14 +781,19 @@ function narrateText(text,cb){
 function narrateBrowser(text,words,cb,gen){
   if(gen===undefined)gen=narGeneration;
   if(!('speechSynthesis'in window)||gen!==narGeneration){trHide();return}
-  narrating=true;trShow(words);
   speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);u.rate=.88;u.pitch=.86;
-  let wordIdx=0;
-  u.onboundary=e=>{if(gen!==narGeneration)return;if(e.name==='word'){trHighlight(wordIdx);wordIdx++}};
-  u.onend=()=>{if(gen!==narGeneration)return;narrating=false;if(cb)cb();setTimeout(trHide,1200)};
-  u.onerror=()=>{if(gen!==narGeneration)return;narrating=false;trHide()};
-  speechSynthesis.speak(u);
+  // small delay to let browser fully release previous speech
+  setTimeout(()=>{
+    if(gen!==narGeneration)return;
+    narrating=true;trShow(words);
+    const u=new SpeechSynthesisUtterance(text);u.rate=.88;u.pitch=.86;
+    activeUtterance=u;
+    let wordIdx=0;
+    u.onboundary=e=>{if(gen!==narGeneration){speechSynthesis.cancel();return}if(e.name==='word'){trHighlight(wordIdx);wordIdx++}};
+    u.onend=()=>{if(gen!==narGeneration)return;narrating=false;activeUtterance=null;if(cb)cb();setTimeout(trHide,1200)};
+    u.onerror=()=>{if(gen!==narGeneration)return;narrating=false;activeUtterance=null;trHide()};
+    speechSynthesis.speak(u);
+  },50);
 }
 function narrateAct(actId){
   const section=document.getElementById(actId);if(!section)return;
@@ -798,8 +804,11 @@ function narrateAct(actId){
   narrateText(full);
 }
 
-// replace old narrate handler
-$('#narrate-btn').onclick=()=>{narrateAct(currentActId)};
+// narrate button: toggle — click while playing stops, otherwise starts
+$('#narrate-btn').onclick=()=>{
+  if(narrating){stopNarration();return}
+  narrateAct(currentActId);
+};
 
 // auto-narrate toggle
 $('#auto-narrate-btn').onclick=()=>{
