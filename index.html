@@ -420,15 +420,7 @@ addEventListener('scroll',()=>{const m=document.documentElement.scrollHeight-inn
 // theme/reset/narration
 $('#theme-btn').onclick=()=>{const light=document.documentElement.dataset.theme==='light';document.documentElement.dataset.theme=light?'dark':'light';$('#theme-btn').textContent=light?'Light':'Dark'};
 $('#reset-btn').onclick=()=>{if(confirm('Reset this institutional session?'))location.reload()};
-$('#narrate-btn').onclick=async()=>{
-  const current=acts.find(a=>{const r=a.getBoundingClientRect();return r.top<innerHeight*.45&&r.bottom>innerHeight*.45})||acts[0];
-  const text=(current.querySelector('h2,h1')?.textContent||'The Institution')+'. '+(current.querySelector('.lede')?.textContent||'');
-  try{
-    const res=await fetch('/api/narrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});
-    if(res.ok){const blob=await res.blob();new Audio(URL.createObjectURL(blob)).play();return}
-  }catch(e){}
-  if('speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.88;u.pitch=.86;speechSynthesis.speak(u);toast('Browser narration active · /api/narrate ready for ElevenLabs')}
-};
+// narrate-btn handler is set later after narrateAct is defined
 
 // intake chips and genesis
 $$('#exposure-chips .chip').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
@@ -747,50 +739,54 @@ function trHighlight(idx){
 function trHide(){trBar.classList.remove('active');trActive=false;trWords.innerHTML='';trCurrentIdx=-1}
 
 // ── narration engine with transcript ──
-let autoNarrate=false,lastNarratedAct='',narrating=false,activeAudio=null;
+let autoNarrate=false,lastNarratedAct='',narrating=false,activeAudio=null,narGeneration=0,narAbort=null;
 function stopNarration(){
+  narGeneration++;
   if('speechSynthesis'in window)speechSynthesis.cancel();
   clearTimeout(trAnimFrame);
-  if(activeAudio){try{activeAudio.pause();activeAudio.src=''}catch(e){};activeAudio=null}
+  if(narAbort){try{narAbort.abort()}catch(e){};narAbort=null}
+  if(activeAudio){try{activeAudio.pause();activeAudio.currentTime=0;activeAudio.src=''}catch(e){};activeAudio=null}
   narrating=false;trHide();
 }
 function narrateText(text,cb){
   stopNarration();narrating=true;
+  const gen=narGeneration;
   const words=text.split(/\s+/).filter(w=>w.length>0);
   trShow(words);
   // try ElevenLabs first
-  fetch('/api/narrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})})
+  narAbort=new AbortController();
+  fetch('/api/narrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text}),signal:narAbort.signal})
   .then(res=>{if(!res.ok)throw new Error();return res.blob()})
   .then(blob=>{
+    if(gen!==narGeneration)return; // stale response, discard
     const audio=new Audio(URL.createObjectURL(blob));
     activeAudio=audio;
     const duration=words.length*0.28;
     audio.onplay=()=>{
       let i=0;
       const step=()=>{
-        if(!trActive||i>=words.length){narrating=false;activeAudio=null;setTimeout(trHide,800);return}
+        if(gen!==narGeneration||!trActive||i>=words.length){if(gen===narGeneration){narrating=false;activeAudio=null;setTimeout(trHide,800)}return}
         trHighlight(i);i++;
         const interval=(audio.duration||duration)/words.length*1000;
         trAnimFrame=setTimeout(step,interval);
       };step();
     };
-    audio.onended=()=>{clearTimeout(trAnimFrame);narrating=false;activeAudio=null;if(cb)cb();setTimeout(trHide,1200)};
-    audio.onerror=()=>{narrating=false;activeAudio=null;trHide();narrateBrowser(text,words,cb)};
-    audio.play().catch(()=>{narrating=false;activeAudio=null;trHide()});
+    audio.onended=()=>{if(gen!==narGeneration)return;clearTimeout(trAnimFrame);narrating=false;activeAudio=null;if(cb)cb();setTimeout(trHide,1200)};
+    audio.onerror=()=>{if(gen!==narGeneration)return;narrating=false;activeAudio=null;trHide();narrateBrowser(text,words,cb,gen)};
+    audio.play().catch(()=>{if(gen!==narGeneration)return;narrating=false;activeAudio=null;trHide()});
   })
-  .catch(()=>{narrating=false;narrateBrowser(text,words,cb)});
+  .catch(e=>{if(gen!==narGeneration||e.name==='AbortError')return;narrating=false;narrateBrowser(text,words,cb,gen)});
 }
-function narrateBrowser(text,words,cb){
-  if(!('speechSynthesis'in window)){trHide();return}
+function narrateBrowser(text,words,cb,gen){
+  if(gen===undefined)gen=narGeneration;
+  if(!('speechSynthesis'in window)||gen!==narGeneration){trHide();return}
   narrating=true;trShow(words);
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);u.rate=.88;u.pitch=.86;
   let wordIdx=0;
-  u.onboundary=e=>{
-    if(e.name==='word'){trHighlight(wordIdx);wordIdx++}
-  };
-  u.onend=()=>{narrating=false;if(cb)cb();setTimeout(trHide,1200)};
-  u.onerror=()=>{narrating=false;trHide()};
+  u.onboundary=e=>{if(gen!==narGeneration)return;if(e.name==='word'){trHighlight(wordIdx);wordIdx++}};
+  u.onend=()=>{if(gen!==narGeneration)return;narrating=false;if(cb)cb();setTimeout(trHide,1200)};
+  u.onerror=()=>{if(gen!==narGeneration)return;narrating=false;trHide()};
   speechSynthesis.speak(u);
 }
 function narrateAct(actId){
