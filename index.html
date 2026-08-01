@@ -796,7 +796,7 @@ async function sendCos(){
   const res=await fetch('/api/cos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q,context:cosContext()})});
   const el=$('#cos-thinking');
   if(res.ok){const data=await res.json();if(el){el.innerHTML=mdToHtml(data.reply);el.removeAttribute('id')}}
-  else{if(el){el.textContent='Chief of Staff unavailable. Check ANTHROPIC_API_KEY in Vercel.';el.removeAttribute('id')}}
+  else{const data=await res.json().catch(()=>({}));if(el){el.textContent='CoS error: '+(data.detail||data.error||'unavailable');el.removeAttribute('id')}}
  }catch(e){const el=$('#cos-thinking');if(el){el.textContent='Connection failed.';el.removeAttribute('id')}}
  $('#cos-send').disabled=false;$('#cos-log').scrollTop=$('#cos-log').scrollHeight;
 }

@@ -53,7 +53,7 @@ Rules:
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: process.env.ANTHROPIC_MODEL_ID || 'claude-sonnet-4-20250514',
         max_tokens: 300,
         system: systemPrompt,
         messages: [{ role: 'user', content: question }]
@@ -63,7 +63,7 @@ Rules:
     if (!upstream.ok) {
       const detail = await upstream.text();
       console.error('Anthropic error:', upstream.status, detail);
-      return res.status(upstream.status).json({ error: 'Chief of Staff unavailable.' });
+      return res.status(502).json({ error: 'Chief of Staff unavailable.', status: upstream.status, detail: detail.substring(0, 200) });
     }
 
     const data = await upstream.json();
