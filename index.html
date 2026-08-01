@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050811">
+<title>THE INSTITUTION · Living Enterprise Assembly</title>
+<meta name="description" content="A living enterprise assembled around your mandate: authority, evidence, human judgment, economics, and succession tested across time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050811;--bg2:#080e1b;--panel:#0b1324;--panel2:#0e192e;--glass:rgba(5,8,17,.78);
+  --text:#eef1e8;--muted:rgba(238,241,232,.66);--dim:rgba(238,241,232,.40);
+  --gold:#d8b65e;--gold2:#f0cf77;--green:#66d1a1;--red:#ff776f;--blue:#76a9ff;--violet:#b993ff;
+  --line:rgba(216,182,94,.20);--line2:rgba(238,241,232,.09);--shadow:0 22px 80px rgba(0,0,0,.34);
+  --rail:76px;--top:58px;--max:1260px;
+}
+html[data-theme="light"]{
+  --bg:#eee9dc;--bg2:#e5decc;--panel:#f9f5eb;--panel2:#eee7d6;--glass:rgba(238,233,220,.84);
+  --text:#101827;--muted:rgba(16,24,39,.70);--dim:rgba(16,24,39,.44);--line:rgba(123,91,18,.28);--line2:rgba(16,24,39,.11);
+  --gold:#8b6918;--gold2:#6d4f0c;--green:#217454;--red:#aa302b;--blue:#285fae;--violet:#6f3eb0;
+  --shadow:0 22px 70px rgba(56,44,20,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.55;overflow-x:hidden;transition:.35s background,.35s color}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:
+ radial-gradient(900px 600px at 84% 0%,rgba(216,182,94,.10),transparent 68%),
+ radial-gradient(800px 700px at 0% 100%,rgba(118,169,255,.07),transparent 65%),
+ linear-gradient(180deg,var(--bg),var(--bg2));}
+body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.045;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:1px solid var(--gold2);outline-offset:3px}
+::selection{background:var(--gold);color:var(--bg)}
+.mono{font-family:'IBM Plex Mono',monospace}.gold{color:var(--gold2)}.green{color:var(--green)}.red{color:var(--red)}
+
+/* global command shell */
+#topbar{position:fixed;top:0;left:var(--rail);right:0;height:var(--top);z-index:80;background:var(--glass);backdrop-filter:blur(18px);border-bottom:1px solid var(--line2);display:flex;align-items:stretch}
+.brand{display:flex;align-items:center;padding:0 24px;border-right:1px solid var(--line2);font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.30em;color:var(--gold2);white-space:nowrap}
+.stage-nav{display:flex;overflow-x:auto;scrollbar-width:none;flex:1}.stage-nav::-webkit-scrollbar{display:none}
+.stage-nav a{display:flex;align-items:center;gap:8px;padding:0 16px;text-decoration:none;color:var(--dim);border-right:1px solid var(--line2);font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;transition:.25s}
+.stage-nav a:hover,.stage-nav a.on{color:var(--text);background:rgba(216,182,94,.05)}.stage-nav a.on b{color:var(--gold2)}
+.top-action{border:0;border-left:1px solid var(--line2);background:transparent;padding:0 16px;font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.13em;color:var(--dim);text-transform:uppercase}.top-action:hover{color:var(--gold2);background:rgba(216,182,94,.05)}
+#progress{position:fixed;top:var(--top);left:var(--rail);right:0;height:2px;z-index:90;background:transparent}#progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--green));transition:width .1s linear}
+
+#rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:90;background:var(--glass);backdrop-filter:blur(16px);border-right:1px solid var(--line2);display:flex;flex-direction:column;align-items:center;padding:18px 0 20px}
+.rail-mark{writing-mode:vertical-rl;font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.25em;color:var(--gold);height:112px}
+#act-chain{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;padding:16px 0 4px}
+.act-dot{position:relative;flex:1;width:100%;display:flex;justify-content:center;text-decoration:none}.act-dot:before{content:"";width:9px;height:9px;border:1px solid var(--dim);transform:rotate(45deg);background:var(--bg);z-index:2;transition:.3s}.act-dot:after{content:"";position:absolute;top:10px;bottom:0;width:1px;background:var(--line2)}.act-dot:last-child:after{display:none}.act-dot.done:before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 14px rgba(216,182,94,.45)}.act-dot.on:before{transform:rotate(45deg) scale(1.55);background:var(--gold2);border-color:var(--gold2);box-shadow:0 0 20px rgba(240,207,119,.65)}
+.act-dot span{position:absolute;left:calc(100% + 9px);top:-5px;opacity:0;transform:translateX(-4px);padding:4px 8px;border:1px solid var(--line);background:var(--bg);font:400 9px 'IBM Plex Mono',monospace;color:var(--gold2);white-space:nowrap;transition:.25s;pointer-events:none}.act-dot:hover span{opacity:1;transform:none}
+.rail-score{font:400 9px 'IBM Plex Mono',monospace;color:var(--dim);text-align:center;line-height:1.6}.rail-score strong{display:block;color:var(--gold2);font-size:14px;font-weight:400}
+
+main{margin-left:var(--rail)}
+.act{min-height:100vh;padding:130px 6vw 100px;display:flex;align-items:center;border-bottom:1px solid var(--line2);position:relative;scroll-margin-top:var(--top)}
+.wrap{width:100%;max-width:var(--max);margin:auto}.eyebrow{font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.26em;color:var(--gold);text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:12px}.eyebrow:before{content:"";width:32px;height:1px;background:var(--gold)}
+h1,h2,h3{font-weight:400;line-height:1.03;letter-spacing:-.035em}h1{font-size:clamp(48px,8vw,116px)}h2{font-size:clamp(38px,5.6vw,76px)}h3{font-size:clamp(22px,2.4vw,34px)}
+.lede{font-size:clamp(17px,1.55vw,21px);color:var(--muted);max-width:820px;margin-top:24px}.lede strong{color:var(--text);font-weight:500}
+.rv{opacity:0;transform:translateY(24px);transition:.75s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+
+/* controls */
+.btn{border:1px solid var(--line);background:transparent;padding:13px 18px;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);transition:.25s}.btn:hover{border-color:var(--gold);color:var(--gold2);background:rgba(216,182,94,.06)}.btn.primary{background:var(--gold);border-color:var(--gold);color:#080b12}.btn.primary:hover{background:var(--gold2);border-color:var(--gold2)}.btn.small{padding:9px 12px;font-size:9px}.btn[disabled]{opacity:.35;cursor:not-allowed}
+.field label{display:block;font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;margin-bottom:8px}.field input,.field textarea,.field select{width:100%;background:rgba(0,0,0,.06);border:1px solid var(--line2);padding:13px 14px;color:var(--text);resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);outline:none}.field textarea{min-height:92px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line2);background:transparent;padding:9px 12px;font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.09em;color:var(--dim);text-transform:uppercase}.chip:hover,.chip.on{border-color:var(--gold);color:var(--gold2);background:rgba(216,182,94,.06)}
+.card{background:linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid var(--line2);box-shadow:var(--shadow)}
+
+/* act 00 */
+#arrival{overflow:hidden}.arrival-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}.title-line{display:block}.title-ghost{color:transparent;-webkit-text-stroke:1px rgba(216,182,94,.48)}
+.genesis{margin-top:42px;padding-top:22px;border-top:1px solid var(--line);font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.08em;color:var(--dim);line-height:2}.genesis b{color:var(--gold);font-weight:400}
+.intake{padding:28px}.intake-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;margin-bottom:22px;border-bottom:1px solid var(--line2)}.intake-head span{font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--gold2)}.intake-head i{font:normal 9px 'IBM Plex Mono',monospace;color:var(--green)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.span2{grid-column:1/-1}.intake-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:22px}.intake-note{font-size:12px;color:var(--dim);max-width:270px}
+
+/* act 01 assembly */
+.assembly-shell{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,.5fr);gap:24px;margin-top:40px}.organism{min-height:610px;position:relative;overflow:hidden;background:
+ radial-gradient(circle at center,rgba(216,182,94,.06),transparent 38%),linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid var(--line2)}
+#network-svg{position:absolute;inset:0;width:100%;height:100%}.net-line{stroke:rgba(216,182,94,.20);stroke-width:1;stroke-dasharray:5 8;animation:dash 18s linear infinite}.net-line.live{stroke:rgba(102,209,161,.55);stroke-width:1.5}.pulse-line{stroke:var(--gold2);stroke-width:2;stroke-dasharray:2 10;animation:dash 5s linear infinite}@keyframes dash{to{stroke-dashoffset:-180}}
+.core{position:absolute;left:50%;top:50%;width:178px;height:178px;transform:translate(-50%,-50%);border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle,rgba(216,182,94,.12),rgba(11,19,36,.8));box-shadow:0 0 70px rgba(216,182,94,.12)}.core:before,.core:after{content:"";position:absolute;border:1px solid var(--line);border-radius:50%;inset:-18px;animation:spin 24s linear infinite}.core:after{inset:-36px;border-style:dashed;animation-direction:reverse;animation-duration:36s}@keyframes spin{to{transform:rotate(360deg)}}.core b{font:500 13px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:var(--gold2)}.core span{display:block;font:400 9px 'IBM Plex Mono',monospace;color:var(--dim);margin-top:8px;letter-spacing:.08em}
+.system-node{position:absolute;width:146px;min-height:82px;padding:13px 14px;border:1px solid var(--line2);background:rgba(8,14,27,.88);backdrop-filter:blur(10px);transition:.35s;cursor:pointer}.system-node:hover,.system-node.active{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 34px rgba(0,0,0,.25)}.system-node.ready{border-color:rgba(102,209,161,.45)}.system-node .sys-code{font:400 8px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:var(--dim)}.system-node .sys-name{font-size:15px;font-weight:500;margin-top:5px}.system-node .sys-role{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.35}.system-node .sys-state{position:absolute;right:9px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--dim)}.system-node.ready .sys-state{background:var(--green);box-shadow:0 0 9px var(--green)}
+.n1{left:8%;top:9%}.n2{left:41%;top:5%}.n3{right:7%;top:15%}.n4{left:4%;top:43%}.n5{right:4%;top:47%}.n6{left:9%;bottom:8%}.n7{left:42%;bottom:4%}.n8{right:8%;bottom:9%}
+.assembly-side{display:flex;flex-direction:column;gap:18px}.signature{padding:22px}.signature h4,.scorecard h4{font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--gold2);text-transform:uppercase;margin-bottom:18px}.sig-row{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:12px}.sig-row span:first-child{font:400 8px 'IBM Plex Mono',monospace;color:var(--dim);letter-spacing:.12em}.scorecard{padding:22px}.score-row{margin-bottom:16px}.score-head{display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px;color:var(--muted)}.score-head b{color:var(--text);font:400 10px 'IBM Plex Mono',monospace}.meter{height:4px;background:var(--line2);overflow:hidden}.meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--green));transition:width 1s cubic-bezier(.2,.8,.2,1)}.inspection{padding:22px;min-height:150px}.inspection .tag{font:400 8px 'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:.16em}.inspection h4{font-size:20px;margin:8px 0}.inspection p{font-size:12px;color:var(--muted)}
+
+/* act 02 DNA */
+.dna-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:38px;margin-top:42px}.helix{position:relative;min-height:530px;border:1px solid var(--line2);background:linear-gradient(145deg,var(--panel),var(--panel2));overflow:hidden;padding:34px}.strand{display:grid;grid-template-columns:170px 1fr 54px;gap:18px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line2)}.strand:last-child{border:0}.strand-name b{display:block;font-size:17px;font-weight:500}.strand-name span{font:400 8px 'IBM Plex Mono',monospace;color:var(--dim);letter-spacing:.13em}.strand-track{height:12px;position:relative;background:repeating-linear-gradient(90deg,var(--line2) 0 9px,transparent 9px 18px)}.strand-track i{display:block;height:100%;width:50%;background:linear-gradient(90deg,transparent,var(--gold),var(--green));filter:drop-shadow(0 0 8px rgba(216,182,94,.35));transition:width .8s}.strand-score{font:400 19px 'IBM Plex Mono',monospace;color:var(--gold2);text-align:right}.dna-orbit{position:absolute;width:260px;height:260px;border:1px solid rgba(216,182,94,.10);border-radius:50%;right:-100px;top:-100px}.dna-orbit:after{content:"DNA";position:absolute;left:80px;bottom:26px;font:300 54px 'IBM Plex Mono',monospace;color:rgba(216,182,94,.08)}
+.mutations{padding:28px}.mutations h4{font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--red);text-transform:uppercase;margin-bottom:18px}.mutation{border-left:2px solid var(--red);padding:11px 0 11px 15px;margin-bottom:16px}.mutation b{font-size:14px;font-weight:500}.mutation p{font-size:12px;color:var(--muted);margin-top:4px}.constitution{margin-top:18px;padding:22px;border:1px solid var(--line);background:rgba(216,182,94,.05)}.constitution .c-head{font:400 9px 'IBM Plex Mono',monospace;color:var(--gold2);letter-spacing:.15em;margin-bottom:12px}.constitution p{font-size:13px;color:var(--muted)}
+
+/* act 03 timeline */
+.timeline-tabs{display:flex;gap:0;margin-top:38px;border:1px solid var(--line2);overflow-x:auto}.time-tab{flex:1;min-width:110px;padding:14px;border:0;border-right:1px solid var(--line2);background:transparent;color:var(--dim);font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase}.time-tab:last-child{border:0}.time-tab:hover,.time-tab.on{color:var(--gold2);background:rgba(216,182,94,.07)}
+.crisis-shell{display:grid;grid-template-columns:1fr .82fr;gap:28px;margin-top:28px}.crisis{padding:32px;min-height:410px}.crisis-kicker{font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--red);text-transform:uppercase}.crisis h3{margin:14px 0 18px}.crisis p{color:var(--muted);font-size:15px}.signals{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);margin:24px 0}.signal{background:var(--panel);padding:16px}.signal b{display:block;font:400 17px 'IBM Plex Mono',monospace;color:var(--gold2)}.signal span{font-size:10px;color:var(--dim)}.decisions{display:grid;gap:10px}.decision{border:1px solid var(--line2);background:transparent;padding:15px;text-align:left;display:grid;grid-template-columns:28px 1fr;gap:12px}.decision:hover,.decision.chosen{border-color:var(--gold);background:rgba(216,182,94,.06)}.decision .letter{font:400 18px 'IBM Plex Mono',monospace;color:var(--gold2)}.decision b{display:block;font-size:14px;font-weight:500}.decision span{display:block;font-size:11px;color:var(--muted);margin-top:3px}.decision.good{border-color:rgba(102,209,161,.45)}
+.time-ledger{padding:28px}.time-ledger h4{font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--gold2);text-transform:uppercase}.ledger-empty{color:var(--dim);font-size:13px;margin-top:18px}.ledger-item{padding:14px 0;border-bottom:1px solid var(--line2)}.ledger-item .when{font:400 8px 'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:.13em}.ledger-item b{display:block;font-size:13px;margin-top:5px}.ledger-item p{font-size:11px;color:var(--muted);margin-top:3px}.consequence{margin-top:20px;padding:18px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
+
+/* act 04 authority */
+.authority-grid{display:grid;grid-template-columns:1fr .78fr;gap:28px;margin-top:38px}.order-form{padding:30px}.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grade{padding:28px}.grade-header{display:flex;justify-content:space-between;align-items:start;padding-bottom:18px;border-bottom:1px solid var(--line2)}.grade-header span{font:400 9px 'IBM Plex Mono',monospace;color:var(--dim);letter-spacing:.15em}.grade-total{font:300 46px 'IBM Plex Mono',monospace;color:var(--gold2)}.grade-total small{font-size:12px;color:var(--dim)}.grade-list{margin-top:20px}.grade-row{display:grid;grid-template-columns:1fr 42px;gap:10px;align-items:center;padding:9px 0}.grade-row span{font-size:12px;color:var(--muted)}.grade-row b{font:400 11px 'IBM Plex Mono',monospace;text-align:right;color:var(--text)}.grade-bar{grid-column:1/-1;height:3px;background:var(--line2)}.grade-bar i{display:block;height:100%;width:0;background:var(--gold);transition:.7s}.grade-note{margin-top:22px;border-left:2px solid var(--gold);padding-left:15px;color:var(--muted);font-size:12px}.seal-record{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:16px}.seal-hash{font:400 9px 'IBM Plex Mono',monospace;color:var(--dim);word-break:break-all}
+
+/* act 05 futures */
+.future-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}.future{padding:26px;min-height:390px;position:relative;overflow:hidden}.future:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--gold)}.future.alt:before{background:var(--blue)}.future.hidden:before{background:var(--violet)}.future .f-code{font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.15em;color:var(--dim)}.future h3{font-size:25px;margin:14px 0}.future .prob{font:300 52px 'IBM Plex Mono',monospace;color:var(--gold2);margin:18px 0}.future.alt .prob{color:var(--blue)}.future.hidden .prob{color:var(--violet)}.future p{font-size:13px;color:var(--muted)}.future ul{list-style:none;margin-top:20px}.future li{font-size:11px;color:var(--muted);padding:9px 0;border-bottom:1px solid var(--line2)}.future li:before{content:"◆";font-size:7px;color:var(--gold);margin-right:8px}.observable{margin-top:22px;padding:20px;border:1px solid var(--line);color:var(--gold2);font-size:15px}
+
+/* act 06 board */
+.board-room{display:grid;grid-template-columns:250px 1fr;gap:28px;margin-top:38px}.board-list{padding:18px}.board-member{width:100%;border:0;border-bottom:1px solid var(--line2);background:transparent;padding:14px 10px;text-align:left;display:grid;grid-template-columns:38px 1fr;gap:11px;align-items:center}.board-member:hover,.board-member.on{background:rgba(216,182,94,.06)}.avatar{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font:400 9px 'IBM Plex Mono',monospace;color:var(--gold2)}.board-member b{display:block;font-size:12px;font-weight:500}.board-member span{font-size:9px;color:var(--dim)}
+.board-chamber{padding:32px;min-height:525px}.speaker{display:flex;gap:16px;align-items:center;padding-bottom:20px;border-bottom:1px solid var(--line2)}.speaker .avatar{width:50px;height:50px}.speaker b{display:block;font-size:16px}.speaker span{font:400 9px 'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:.12em}.challenge{font-size:clamp(22px,2.4vw,34px);line-height:1.25;margin:34px 0;color:var(--text);max-width:850px}.board-answer textarea{min-height:130px}.board-actions{display:flex;justify-content:space-between;align-items:center;margin-top:15px}.response-score{font:400 10px 'IBM Plex Mono',monospace;color:var(--dim)}.response-score strong{color:var(--green);font-size:16px}.board-transcript{margin-top:25px;padding-top:20px;border-top:1px solid var(--line2)}.transcript-line{font-size:11px;color:var(--muted);padding:7px 0}.transcript-line b{color:var(--gold2);font-weight:500}
+
+/* act 07 autopsy */
+.autopsy-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;margin-top:40px}.verdict{padding:34px}.verdict-seal{width:150px;height:150px;border:1px solid var(--gold);border-radius:50%;margin:0 auto 25px;display:flex;align-items:center;justify-content:center;position:relative}.verdict-seal:before{content:"";position:absolute;inset:11px;border:1px dashed var(--line);border-radius:50%;animation:spin 22s linear infinite}.verdict-seal span{text-align:center;font:400 10px 'IBM Plex Mono',monospace;color:var(--gold2);letter-spacing:.13em}.verdict h3{text-align:center}.verdict p{text-align:center;color:var(--muted);font-size:13px;margin-top:14px}.durability{margin-top:24px;text-align:center;font:300 58px 'IBM Plex Mono',monospace;color:var(--green)}.durability small{font-size:12px;color:var(--dim)}
+.autopsy-findings{padding:30px}.finding{display:grid;grid-template-columns:108px 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line2)}.finding .f-label{font:400 8px 'IBM Plex Mono',monospace;letter-spacing:.13em;color:var(--dim)}.finding b{display:block;font-size:15px;font-weight:500}.finding p{font-size:12px;color:var(--muted);margin-top:5px}.contradiction{margin-top:22px;padding:22px;border:1px solid rgba(255,119,111,.32);background:rgba(255,119,111,.04)}.contradiction h4{font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:var(--red);text-transform:uppercase}.contradiction p{font-size:13px;color:var(--muted);margin-top:10px}
+
+/* act 08 record */
+.record-grid{display:grid;grid-template-columns:1fr .7fr;gap:28px;margin-top:40px}.charter{padding:34px}.charter-head{display:flex;justify-content:space-between;align-items:start;padding-bottom:22px;border-bottom:1px solid var(--line)}.charter-head h3{font-size:27px}.charter-head span{font:400 9px 'IBM Plex Mono',monospace;color:var(--green);letter-spacing:.14em}.charter-section{padding:20px 0;border-bottom:1px solid var(--line2)}.charter-section h4{font:400 9px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:var(--gold);text-transform:uppercase;margin-bottom:10px}.charter-section p,.charter-section li{font-size:12px;color:var(--muted)}.charter-section ul{padding-left:18px}.record-side{display:flex;flex-direction:column;gap:18px}.wallet{padding:25px}.wallet h4{font:400 10px 'IBM Plex Mono',monospace;color:var(--gold2);letter-spacing:.16em;text-transform:uppercase}.wallet-stat{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line2);font-size:12px;color:var(--muted)}.wallet-stat b{font:400 12px 'IBM Plex Mono',monospace;color:var(--text)}.terminal-hash{margin-top:18px;font:400 9px 'IBM Plex Mono',monospace;color:var(--green);word-break:break-all}.export-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.final-line{margin-top:36px;font-size:clamp(24px,3vw,42px);color:var(--gold2);max-width:880px;line-height:1.3}
+
+/* chief of staff */
+#cos-toggle{position:fixed;right:22px;bottom:22px;z-index:95;border:1px solid var(--gold);background:var(--glass);backdrop-filter:blur(15px);padding:12px 15px;font:400 9px 'IBM Plex Mono',monospace;color:var(--gold2);letter-spacing:.13em;text-transform:uppercase;box-shadow:var(--shadow)}
+#cos{position:fixed;right:18px;bottom:74px;width:min(390px,calc(100vw - 36px));height:520px;z-index:100;background:var(--bg2);border:1px solid var(--line);box-shadow:var(--shadow);display:none;flex-direction:column}#cos.open{display:flex}.cos-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line2)}.cos-head b{font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:var(--gold2)}.cos-head button{border:0;background:transparent;color:var(--dim)}.cos-log{flex:1;overflow:auto;padding:16px}.cos-msg{padding:11px 12px;margin-bottom:10px;border:1px solid var(--line2);font-size:12px;color:var(--muted)}.cos-msg.ai{border-left:2px solid var(--gold)}.cos-msg.you{border-left:2px solid var(--blue)}.cos-input{display:grid;grid-template-columns:1fr auto;border-top:1px solid var(--line2)}.cos-input input{border:0;background:transparent;padding:15px}.cos-input button{border:0;border-left:1px solid var(--line2);background:transparent;padding:0 15px;color:var(--gold2)}
+
+/* toast and boot */
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;z-index:120;background:var(--bg2);border:1px solid var(--line);padding:11px 16px;font:400 9px 'IBM Plex Mono',monospace;color:var(--gold2);letter-spacing:.12em;transition:.3s;pointer-events:none}#toast.show{opacity:1;transform:translate(-50%,0)}
+#boot{position:fixed;inset:0;z-index:200;background:#050811;display:flex;align-items:center;justify-content:center;transition:.8s opacity}.boot-inner{text-align:center}.boot-mark{font:400 11px 'IBM Plex Mono',monospace;letter-spacing:.38em;color:#d8b65e}.boot-title{font-size:clamp(40px,8vw,94px);letter-spacing:-.05em;margin-top:17px}.boot-line{width:240px;height:1px;background:rgba(216,182,94,.2);margin:28px auto 0;overflow:hidden}.boot-line span{display:block;height:100%;width:0;background:#d8b65e;animation:boot 1.35s ease forwards}@keyframes boot{to{width:100%}}#boot.out{opacity:0;pointer-events:none}
+
+@media(max-width:1050px){.arrival-grid,.assembly-shell,.dna-layout,.crisis-shell,.authority-grid,.autopsy-grid,.record-grid{grid-template-columns:1fr}.future-grid{grid-template-columns:1fr}.board-room{grid-template-columns:1fr}.board-list{display:grid;grid-template-columns:repeat(3,1fr)}.board-member{border-right:1px solid var(--line2)}.organism{min-height:650px}}
+@media(max-width:760px){:root{--rail:0px;--top:52px}#rail{display:none}.brand{display:none}.top-action{padding:0 11px}.stage-nav a{padding:0 12px}.act{padding:105px 6vw 80px}.form-grid,.order-grid{grid-template-columns:1fr}.span2{grid-column:auto}.intake-footer,.seal-record,.board-actions{align-items:stretch;flex-direction:column}.organism{min-height:790px}.system-node{width:135px}.core{width:145px;height:145px}.n1{left:4%;top:5%}.n2{right:4%;left:auto;top:5%}.n3{left:4%;right:auto;top:24%}.n4{right:4%;left:auto;top:24%}.n5{left:4%;right:auto;top:54%}.n6{right:4%;left:auto;bottom:auto;top:54%}.n7{left:4%;bottom:5%}.n8{right:4%;bottom:5%}.signals{grid-template-columns:1fr}.board-list{grid-template-columns:1fr 1fr}.strand{grid-template-columns:1fr 40px}.strand-track{grid-column:1/-1}.future{min-height:auto}.finding{grid-template-columns:1fr}.export-actions{grid-template-columns:1fr}#cos-toggle{right:12px;bottom:12px}}
+@media print{#topbar,#rail,#progress,#cos-toggle,#cos,#toast,.btn,.chips,.timeline-tabs,.board-list{display:none!important}main{margin:0}.act{display:none!important}#record{display:flex!important;min-height:auto;padding:20px}.record-grid{display:block}.record-side{margin-top:20px}.card{box-shadow:none}.charter{border-color:#999;color:#111;background:#fff}.charter *{color:#111!important}}
+</style>
+</head>
+<body>
+<div id="boot"><div class="boot-inner"><div class="boot-mark">THE STUDIO · INSTITUTIONAL AI ENGINEERING</div><div class="boot-title">THE INSTITUTION</div><div class="boot-line"><span></span></div></div></div>
+
+<aside id="rail" aria-label="Institutional acts">
+  <div class="rail-mark">LIVING ENTERPRISE · SEALED RECORD</div>
+  <nav id="act-chain"></nav>
+  <div class="rail-score">DURABILITY<strong id="rail-durability">—</strong></div>
+</aside>
+<header id="topbar">
+  <div class="brand">The Institution</div>
+  <nav class="stage-nav" aria-label="Acts">
+    <a href="#arrival"><b>00</b> Arrival</a><a href="#assembly"><b>01</b> Assembly</a><a href="#dna"><b>02</b> DNA</a><a href="#time"><b>03</b> Time</a><a href="#authority"><b>04</b> Authority</a><a href="#futures"><b>05</b> Futures</a><a href="#board"><b>06</b> Board</a><a href="#autopsy"><b>07</b> Autopsy</a><a href="#record"><b>08</b> Record</a>
+  </nav>
+  <button class="top-action" id="narrate-btn">Narrate</button>
+  <button class="top-action" id="theme-btn">Light</button>
+  <button class="top-action" id="reset-btn">Reset</button>
+</header>
+<div id="progress"><span></span></div>
+
+<main>
+<section class="act" id="arrival" data-act="ARRIVAL">
+  <div class="wrap arrival-grid">
+    <div>
+      <div class="eyebrow rv">Act 00 · Mandate intake</div>
+      <h1 class="rv d1"><span class="title-line">Build the</span><span class="title-line title-ghost">institution.</span></h1>
+      <p class="lede rv d2">You are not here to inspect thirty-one systems. You are here to discover what kind of institution they can build <strong>around your mandate</strong>.</p>
+      <div class="genesis rv d3">GENESIS PROTOCOL · <b id="genesis-hash">COMPUTING</b><br>OPERATING MODEL · AUTHORITY + EVIDENCE + HUMANS + ECONOMICS + SUCCESSION<br>RULE · EVERY DECISION ALTERS THE INSTITUTION THAT FOLLOWS</div>
+    </div>
+    <div class="intake card rv d2">
+      <div class="intake-head"><span>MANDATE SIGNATURE</span><i>● PRIVATE SESSION</i></div>
+      <div class="form-grid">
+        <div class="field"><label>Your seat</label><select id="role"><option>Chief AI Officer</option><option>Operating Partner</option><option>Chief Risk Officer</option><option>Chief Operating Officer</option><option>Board Director</option><option>PMO / Transformation Leader</option></select></div>
+        <div class="field"><label>Institution</label><select id="institution"><option>Global Bank</option><option>Private Equity Portfolio</option><option>Wealth Management Firm</option><option>Healthcare Network</option><option>Industrial Enterprise</option><option>Technology Company</option></select></div>
+        <div class="field span2"><label>Mandate</label><textarea id="mandate">Deploy autonomous AI across six business units within 180 days without losing regulatory control, human accountability, or decision provenance.</textarea></div>
+        <div class="field"><label>Decision horizon</label><select id="horizon"><option value="90">90 days</option><option value="180" selected>180 days</option><option value="365">One year</option><option value="1825">Five years</option></select></div>
+        <div class="field"><label>Capital at risk</label><select id="capital"><option>$10M transformation</option><option selected>$50M transformation</option><option>$250M portfolio</option><option>$2.4B portfolio</option><option>Institution-wide</option></select></div>
+        <div class="field span2"><label>Primary exposures</label><div class="chips" id="exposure-chips"><button class="chip on">Regulatory</button><button class="chip on">Cyber</button><button class="chip on">Talent</button><button class="chip">Client</button><button class="chip">Value Creation</button><button class="chip">Succession</button></div></div>
+      </div>
+      <div class="intake-footer"><p class="intake-note">Your choices will determine system composition, future crises, board pressure, and the final institutional autopsy.</p><button class="btn primary" id="assemble-btn">Assemble institution →</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="act" id="assembly" data-act="ASSEMBLY">
+  <div class="wrap">
+    <div class="eyebrow rv">Act I · Institution assembly</div>
+    <h2 class="rv d1">Eight systems.<br>One operating organism.</h2>
+    <p class="lede rv d2">The portfolio is no longer a catalogue. Each system takes a constitutional role inside the institution created by your mandate.</p>
+    <div class="assembly-shell rv d3">
+      <div class="organism">
+        <svg id="network-svg" viewBox="0 0 900 620" preserveAspectRatio="none" aria-hidden="true">
+          <line class="net-line" x1="450" y1="310" x2="130" y2="90"/><line class="net-line" x1="450" y1="310" x2="450" y2="65"/><line class="net-line" x1="450" y1="310" x2="780" y2="115"/><line class="net-line" x1="450" y1="310" x2="115" y2="310"/><line class="net-line" x1="450" y1="310" x2="790" y2="340"/><line class="net-line" x1="450" y1="310" x2="145" y2="540"/><line class="net-line" x1="450" y1="310" x2="465" y2="560"/><line class="net-line" x1="450" y1="310" x2="780" y2="535"/>
+          <line class="net-line" x1="130" y1="90" x2="450" y2="65"/><line class="net-line" x1="780" y1="115" x2="790" y2="340"/><line class="net-line" x1="145" y1="540" x2="465" y2="560"/><line class="net-line" x1="465" y1="560" x2="780" y2="535"/>
+        </svg>
+        <div class="core"><div><b>YOUR<br>MANDATE</b><span id="core-role">UNASSEMBLED</span></div></div>
+        <button class="system-node n1" data-system="KEEL"><i class="sys-state"></i><span class="sys-code">SYS·01</span><div class="sys-name">KEEL</div><div class="sys-role">Decision governance</div></button>
+        <button class="system-node n2" data-system="RegTwin AI"><i class="sys-state"></i><span class="sys-code">SYS·02</span><div class="sys-name">RegTwin AI</div><div class="sys-role">Regulatory intelligence</div></button>
+        <button class="system-node n3" data-system="BLACKBOX"><i class="sys-state"></i><span class="sys-code">SYS·03</span><div class="sys-name">BLACKBOX</div><div class="sys-role">Institutional flight recorder</div></button>
+        <button class="system-node n4" data-system="AgentPMO"><i class="sys-state"></i><span class="sys-code">SYS·04</span><div class="sys-name">AgentPMO</div><div class="sys-role">Agent control plane</div></button>
+        <button class="system-node n5" data-system="TalentOracle"><i class="sys-state"></i><span class="sys-code">SYS·05</span><div class="sys-name">TalentOracle</div><div class="sys-role">Key-person intelligence</div></button>
+        <button class="system-node n6" data-system="ERIS Pro"><i class="sys-state"></i><span class="sys-code">SYS·06</span><div class="sys-name">ERIS Pro</div><div class="sys-role">Enterprise risk command</div></button>
+        <button class="system-node n7" data-system="BISO"><i class="sys-state"></i><span class="sys-code">SYS·07</span><div class="sys-name">BISO</div><div class="sys-role">Security immune system</div></button>
+        <button class="system-node n8" data-system="The Studio"><i class="sys-state"></i><span class="sys-code">SYS·08</span><div class="sys-name">The Studio</div><div class="sys-role">Human capability layer</div></button>
+      </div>
+      <div class="assembly-side">
+        <div class="signature card"><h4>Mandate signature</h4><div id="signature-body"><div class="sig-row"><span>STATUS</span><b>Awaiting assembly</b></div></div></div>
+        <div class="scorecard card"><h4>Institution formation</h4><div id="formation-scores"></div></div>
+        <div class="inspection card" id="inspection"><span class="tag">SYSTEM INSPECTION</span><h4>Select an organ</h4><p>Inspect how each portfolio system changes role inside the assembled institution.</p></div>
+        <button class="btn primary" id="seal-assembly" disabled>Seal operating organism →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="act" id="dna" data-act="INSTITUTIONAL DNA">
+  <div class="wrap">
+    <div class="eyebrow rv">Act II · Institutional DNA</div>
+    <h2 class="rv d1">The constitution beneath<br>the architecture.</h2>
+    <p class="lede rv d2">Technology shows what the institution can do. DNA determines what it is permitted to become.</p>
+    <div class="dna-layout rv d3">
+      <div class="helix card"><div class="dna-orbit"></div>
+        <div class="strand" data-key="authority"><div class="strand-name"><span>STRAND 01</span><b>Authority DNA</b></div><div class="strand-track"><i></i></div><div class="strand-score">—</div></div>
+        <div class="strand" data-key="evidence"><div class="strand-name"><span>STRAND 02</span><b>Evidence DNA</b></div><div class="strand-track"><i></i></div><div class="strand-score">—</div></div>
+        <div class="strand" data-key="human"><div class="strand-name"><span>STRAND 03</span><b>Human DNA</b></div><div class="strand-track"><i></i></div><div class="strand-score">—</div></div>
+        <div class="strand" data-key="economics"><div class="strand-name"><span>STRAND 04</span><b>Economic DNA</b></div><div class="strand-track"><i></i></div><div class="strand-score">—</div></div>
+        <div class="strand" data-key="succession"><div class="strand-name"><span>STRAND 05</span><b>Succession DNA</b></div><div class="strand-track"><i></i></div><div class="strand-score">—</div></div>
+      </div>
+      <div>
+        <div class="mutations card"><h4>Detected mutations</h4><div id="mutation-list"><div class="mutation"><b>Institution not yet assembled</b><p>Complete Act I to expose the hidden weaknesses inside the operating model.</p></div></div></div>
+        <div class="constitution"><div class="c-head">CONSTITUTIONAL CLAUSE · 01</div><p id="constitution-clause">No machine authority exists until its boundary, accountable owner, evidence obligation, and stop condition are visible together.</p></div>
+        <button class="btn primary" style="margin-top:18px" id="ratify-dna" disabled>Ratify institutional DNA →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="act" id="time" data-act="TIME COMPRESSION">
+  <div class="wrap">
+    <div class="eyebrow rv">Act III · Time compression</div>
+    <h2 class="rv d1">The institution meets<br>its future consequences.</h2>
+    <p class="lede rv d2">A decision made on Day 30 may become evidence—or liability—in Year 5. Advance through time and leave a record the institution must live with.</p>
+    <div class="timeline-tabs rv d3" id="timeline-tabs"><button class="time-tab on" data-time="0">Day 1</button><button class="time-tab" data-time="1">Day 30</button><button class="time-tab" data-time="2">Day 90</button><button class="time-tab" data-time="3">Year 1</button><button class="time-tab" data-time="4">Year 5</button></div>
+    <div class="crisis-shell rv d3">
+      <div class="crisis card"><div class="crisis-kicker" id="crisis-kicker">DAY 1 · INITIAL AUTHORITY</div><h3 id="crisis-title">The first agent wants permission to act.</h3><p id="crisis-body">An autonomous research agent can publish an internal market brief in twelve minutes. The sponsor wants the capability switched on before the control team has completed authority mapping.</p><div class="signals" id="signals"></div><div class="decisions" id="decisions"></div></div>
+      <div class="time-ledger card"><h4>Decision ledger</h4><div id="ledger"><p class="ledger-empty">No institutional decisions committed.</p></div><div class="consequence" id="consequence">The institution is still waiting for its first binding choice.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="act" id="authority" data-act="AUTHORITY CHAMBER">
+  <div class="wrap">
+    <div class="eyebrow rv">Act IV · Authority chamber</div>
+    <h2 class="rv d1">Issue the order<br>the institution can obey.</h2>
+    <p class="lede rv d2">Multiple choice ends here. Write the institutional command that converts intent into accountable operating authority.</p>
+    <div class="authority-grid rv d3">
+      <div class="order-form card"><div class="order-grid">
+        <div class="field span2"><label>Situation</label><textarea id="o-situation" placeholder="What has happened, and why does it matter now?"></textarea></div>
+        <div class="field span2"><label>Decision</label><textarea id="o-decision" placeholder="What will the institution do?"></textarea></div>
+        <div class="field"><label>Authority</label><textarea id="o-authority" placeholder="Who may act, approve, override, stop?"></textarea></div>
+        <div class="field"><label>Risk accepted</label><textarea id="o-risk" placeholder="What exposure is knowingly retained?"></textarea></div>
+        <div class="field"><label>Control</label><textarea id="o-control" placeholder="What must be monitored and evidenced?"></textarea></div>
+        <div class="field"><label>Owner</label><textarea id="o-owner" placeholder="Who remains accountable?"></textarea></div>
+        <div class="field span2"><label>Reversal trigger</label><textarea id="o-trigger" placeholder="What evidence would cause this decision to change?"></textarea></div>
+      </div></div>
+      <div class="grade card"><div class="grade-header"><div><span>COMMAND QUALITY</span><div class="grade-total" id="grade-total">—<small>/100</small></div></div><button class="btn small" id="prefill-order">Use current crisis</button></div><div class="grade-list" id="grade-list"></div><div class="grade-note" id="grade-note">The system grades clarity, authority alignment, evidence quality, proportionality, economic realism, human consequence, reversibility, and durability.</div><div class="seal-record"><div class="seal-hash" id="order-hash">UNSEALED</div><button class="btn primary" id="commit-order">Commit command</button></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="act" id="futures" data-act="COUNTERFACTUALS">
+  <div class="wrap">
+    <div class="eyebrow rv">Act V · Counterfactual observatory</div>
+    <h2 class="rv d1">One decision.<br>Three institutional futures.</h2>
+    <p class="lede rv d2">The strongest alternative is not always the hidden danger. The invisible future is the consequence your current operating model is least prepared to see.</p>
+    <div class="future-grid rv d3">
+      <article class="future card"><div class="f-code">FUTURE A · DECISION TAKEN</div><h3 id="future-a-title">Awaiting your command</h3><div class="prob" id="future-a-prob">—</div><p id="future-a-body">Commit an authority order to create the institution’s chosen future.</p><ul id="future-a-list"></ul></article>
+      <article class="future alt card"><div class="f-code">FUTURE B · STRONGEST ALTERNATIVE</div><h3 id="future-b-title">Unobserved alternative</h3><div class="prob" id="future-b-prob">—</div><p id="future-b-body">The observatory will model the path your institution did not choose.</p><ul id="future-b-list"></ul></article>
+      <article class="future hidden card"><div class="f-code">FUTURE C · INVISIBLE CONSEQUENCE</div><h3 id="future-c-title">Hidden dependency</h3><div class="prob" id="future-c-prob">—</div><p id="future-c-body">The observatory will identify the consequence outside your stated decision frame.</p><ul id="future-c-list"></ul></article>
+    </div>
+    <div class="observable rv" id="observatory-line">“The institution cannot yet distinguish a deliberate design choice from an unexamined dependency.”</div>
+  </div>
+</section>
+
+<section class="act" id="board" data-act="LIVING BOARD">
+  <div class="wrap">
+    <div class="eyebrow rv">Act VI · The living board</div>
+    <h2 class="rv d1">The evidence enters<br>the room before you do.</h2>
+    <p class="lede rv d2">Each stakeholder sees a different part of the institution. None accepts intention as proof.</p>
+    <div class="board-room rv d3">
+      <div class="board-list card" id="board-list"></div>
+      <div class="board-chamber card"><div class="speaker"><div class="avatar" id="speaker-avatar">CH</div><div><b id="speaker-name">Board Chair</b><span id="speaker-role">INSTITUTIONAL AUTHORITY</span></div></div><div class="challenge" id="challenge">“Before we discuss scale, show this board which machine can make the most consequential decision without a human—and who can stop it tonight.”</div><div class="field board-answer"><label>Your answer to the record</label><textarea id="board-response" placeholder="Answer from the operating record, not from intention."></textarea></div><div class="board-actions"><div class="response-score">EVIDENCE RESPONSE · <strong id="board-score">—</strong></div><button class="btn primary" id="answer-board">Seal response</button></div><div class="board-transcript" id="board-transcript"><div class="transcript-line"><b>BOARD SECRETARY</b> · Session opened. Institutional record admitted into evidence.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="act" id="autopsy" data-act="INSTITUTIONAL AUTOPSY">
+  <div class="wrap">
+    <div class="eyebrow rv">Act VII · Institutional autopsy</div>
+    <h2 class="rv d1">What did your<br>decisions actually build?</h2>
+    <p class="lede rv d2">The autopsy compares your stated principles, operating choices, evidence record, and the institution’s ability to survive you.</p>
+    <div class="autopsy-grid rv d3">
+      <div class="verdict card"><div class="verdict-seal"><span id="verdict-code">AWAITING<br>RECORD</span></div><h3 id="verdict-title">The Unformed Institution</h3><p id="verdict-body">Complete the operating journey to expose the institution’s actual character.</p><div class="durability" id="durability">—<small>/100</small></div><button class="btn primary" style="width:100%;margin-top:22px" id="run-autopsy">Run institutional autopsy</button></div>
+      <div class="autopsy-findings card" id="autopsy-findings"><div class="finding"><div class="f-label">AUTHORITY</div><div><b>No evidence yet</b><p>The autopsy requires an assembled operating model and a committed command.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="act" id="record" data-act="INSTITUTIONAL RECORD">
+  <div class="wrap">
+    <div class="eyebrow rv">Act VIII · The institutional record</div>
+    <h2 class="rv d1">Leave with a charter.<br>Not a score.</h2>
+    <p class="lede rv d2">Your session becomes a board-grade operating record: mandate, architecture, authority, evidence, accepted risk, stop conditions, and succession exposure.</p>
+    <div class="record-grid rv d3">
+      <article class="charter card" id="charter"><div class="charter-head"><div><h3>Institutional Charter</h3><p class="mono" style="font-size:9px;color:var(--dim);margin-top:6px" id="charter-id">RECORD NOT YET SEALED</p></div><span>● TAMPER-EVIDENT</span></div><div id="charter-body"><div class="charter-section"><h4>Status</h4><p>Run the institutional autopsy to generate the final charter.</p></div></div></article>
+      <aside class="record-side"><div class="wallet card"><h4>Evidence wallet</h4><div class="wallet-stat"><span>Systems assembled</span><b id="w-systems">0 / 8</b></div><div class="wallet-stat"><span>Decisions committed</span><b id="w-decisions">0 / 5</b></div><div class="wallet-stat"><span>Authority order</span><b id="w-order">OPEN</b></div><div class="wallet-stat"><span>Board responses</span><b id="w-board">0</b></div><div class="wallet-stat"><span>Durability verdict</span><b id="w-verdict">PENDING</b></div><div class="terminal-hash" id="terminal-hash">TERMINAL HASH · PENDING</div></div><div class="export-actions"><button class="btn" id="download-json">Download record</button><button class="btn" id="print-charter">Print charter</button></div><button class="btn primary" id="copy-brief">Copy board brief</button></aside>
+    </div>
+    <div class="final-line rv">The institution is not the technology you installed. It is the authority, evidence, incentives, memory, and human judgment that remain after you leave.</div>
+  </div>
+</section>
+</main>
+
+<button id="cos-toggle">Chief of Staff · Online</button>
+<aside id="cos"><div class="cos-head"><b>AI CHIEF OF STAFF</b><button id="cos-close">×</button></div><div class="cos-log" id="cos-log"><div class="cos-msg ai">I am watching the institution you are building. Ask me where authority is unclear, evidence is weak, or the operating model depends too heavily on you.</div></div><div class="cos-input"><input id="cos-input" placeholder="Interrogate the institution…"><button id="cos-send">Send</button></div></aside>
+<div id="toast"></div>
+
+<script>
+(()=>{
+'use strict';
+const $=(s,p=document)=>p.querySelector(s), $$=(s,p=document)=>[...p.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const state={
+  assembled:false,dnaRatified:false,mandate:{},exposures:[],scores:{authority:0,evidence:0,human:0,economics:0,succession:0},
+  timelineIndex:0,decisions:[],order:null,orderScore:0,boardResponses:[],verdict:null,hashes:[],chainHead:'',terminalHash:''
+};
+const SYSTEMS={
+ 'KEEL':{role:'Decision governance',text:'Intercepts strategic reversals, tests pre-committed exit criteria, and preserves decision provenance in the Conviction Ledger.',effect:{authority:10,evidence:6,economics:3}},
+ 'RegTwin AI':{role:'Regulatory intelligence',text:'Monitors regulatory change, maps impact, finds control gaps, predicts audit findings, and prepares board-level remediation evidence.',effect:{evidence:12,authority:4}},
+ 'BLACKBOX':{role:'Institutional flight recorder',text:'Creates a tamper-evident, replayable record of every reasoning step, tool call, decision, and output.',effect:{evidence:16,succession:5}},
+ 'AgentPMO':{role:'Agent control plane',text:'Registers every agent, classifies risk, tracks cost and performance, records incidents, and enforces lifecycle ownership.',effect:{authority:11,economics:8,evidence:5}},
+ 'TalentOracle':{role:'Key-person intelligence',text:'Surfaces departure risk and key-person exposure before critical institutional knowledge walks out of the door.',effect:{human:13,succession:7,economics:4}},
+ 'ERIS Pro':{role:'Enterprise risk command',text:'Coordinates predictive risk intelligence and threat response across security, compliance, and operational domains.',effect:{authority:4,evidence:5,human:3}},
+ 'BISO':{role:'Security immune system',text:'Combines code scanning, topology-aware prediction, autonomous fix loops, semantic bug memory, and quarantine controls.',effect:{evidence:7,authority:5,succession:3}},
+ 'The Studio':{role:'Human capability layer',text:'Builds governance judgment through scored simulation, command rehearsal, evidence discipline, and institutional memory transfer.',effect:{human:15,succession:12,authority:3}}
+};
+const CRISES=[
+ {when:'DAY 1',kicker:'INITIAL AUTHORITY',title:'The first agent wants permission to act.',body:'An autonomous research agent can publish an internal market brief in twelve minutes. The sponsor wants the capability switched on before the control team has completed authority mapping.',signals:[['12 min','Output cycle'],['0','Named owners'],['Open','Authority map']],choices:[['Launch now','Treat speed as the controlling priority.','velocity'],['Constrained pilot','Permit internal drafts only, with named human approval and full logging.','balanced'],['Hold completely','Wait until every governance artifact is complete.','control']]},
+ {when:'DAY 30',kicker:'THE BENEFIT CLAIM',title:'Productivity is up. So is invisible review work.',body:'The program reports a 28% productivity improvement. Analysts say first drafts are faster, but senior reviewers are spending more time correcting unsupported claims and restoring institutional voice.',signals:[['28%','Reported gain'],['+19%','Review effort'],['Unknown','Correction cost']],choices:[['Keep the headline','Report the gross benefit and fix measurement later.','velocity'],['Rebase the economics','Include review, rework, control, and error cost before claiming value.','balanced'],['Suspend the program','Stop until the benefit can be proven beyond dispute.','control']]},
+ {when:'DAY 90',kicker:'THE SHADOW AGENT',title:'A business unit built an agent outside the registry.',body:'The shadow agent can send client communications and update CRM records. It has no named owner, no approved model card, and no stop procedure. Revenue leadership says it has already influenced $8M of pipeline.',signals:[['$8M','Pipeline touched'],['0','Stop owners'],['3,214','Client records']],choices:[['Absorb quietly','Register it after the quarter and avoid commercial disruption.','velocity'],['Contain and evidence','Disable external actions, preserve records, assign ownership, then reassess.','balanced'],['Enterprise freeze','Stop all agents until the governance model is rebuilt.','control']]},
+ {when:'YEAR 1',kicker:'THE SUCCESSION GAP',title:'The architect resigns with four weeks’ notice.',body:'The institution’s strongest AI sponsor and system architect is leaving. Technical documentation exists, but many authority exceptions and stakeholder agreements were never converted into institutional policy.',signals:[['4 weeks','Notice'],['37','Exceptions'],['1','True interpreter']],choices:[['Counteroffer','Retain the architect and defer the structural problem.','velocity'],['Transfer authority','Convert exceptions into policy, rehearse successors, and test operational continuity.','balanced'],['Centralize control','Move all authority to a new executive committee.','control']]},
+ {when:'YEAR 5',kicker:'THE REGULATORY DEPOSITION',title:'The institution must explain a decision made today.',body:'A regulator reconstructs an AI-assisted decision that affected clients across three markets. The original sponsor is gone. The model has changed twice. The question is whether the institution—not one person—can explain what it authorized.',signals:[['3','Markets'],['2','Model changes'],['5 yrs','Elapsed time']],choices:[['Explain intent','Rely on leadership testimony and policy summaries.','velocity'],['Replay the record','Produce authority, evidence, controls, overrides, and decision provenance.','balanced'],['Contest scope','Argue that the current model is not the model under review.','control']]}
+];
+const BOARD=[
+ {id:'chair',initials:'CH',name:'Board Chair',role:'INSTITUTIONAL AUTHORITY',q:'Before we discuss scale, show this board which machine can make the most consequential decision without a human—and who can stop it tonight.'},
+ {id:'cfo',initials:'CF',name:'Chief Financial Officer',role:'ECONOMIC TRUTH',q:'You claimed productivity. Show me the benefit after review, rework, error, control, and model cost. Which benefit disappears first when we count honestly?'},
+ {id:'cro',initials:'CR',name:'Chief Risk Officer',role:'RISK OWNERSHIP',q:'Name the risk you knowingly accepted. Where is that acceptance visible, and what evidence forces reconsideration?'},
+ {id:'gc',initials:'GC',name:'General Counsel',role:'LEGAL DEFENSIBILITY',q:'What did the institution reasonably authorize—not what you personally intended—and what surviving record proves the difference?'},
+ {id:'emp',initials:'ER',name:'Employee Representative',role:'HUMAN CONSEQUENCE',q:'What work disappeared before employment did, and what did the institution owe the people whose judgment trained the machine?'},
+ {id:'succ',initials:'FS',name:'Future Successor',role:'SUCCESSION DURABILITY',q:'When you leave, which boundary can I weaken without returning to the board—and how would I know that I crossed it?'}
+];
+let boardActive=0;
+
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),1800)}
+function shaFallback(input){
+ const ascii=unescape(encodeURIComponent(input));
+ const rightRotate=(v,a)=>(v>>>a)|(v<<(32-a));
+ const maxWord=Math.pow(2,32),words=[];let result='',i,j;
+ const bitLen=ascii.length*8,k=shaFallback.k=shaFallback.k||[],composite={};
+ let hash=shaFallback.h=shaFallback.h||[],prime=k.length;
+ for(let candidate=2;prime<64;candidate++)if(!composite[candidate]){for(i=0;i<313;i+=candidate)composite[i]=candidate;hash[prime]=(Math.pow(candidate,.5)*maxWord)|0;k[prime++]=(Math.pow(candidate,1/3)*maxWord)|0}
+ let data=ascii+'\x80';while(data.length%64-56)data+='\x00';
+ for(i=0;i<data.length;i++){j=data.charCodeAt(i);words[i>>2]|=j<<((3-i)%4)*8}
+ words[words.length]=(bitLen/maxWord)|0;words[words.length]=bitLen;
+ for(j=0;j<words.length;){const w=words.slice(j,j+=16),old=hash.slice(0);for(i=0;i<64;i++){const w15=w[i-15],w2=w[i-2],a=hash[0],e=hash[4];const temp1=(hash[7]+(rightRotate(e,6)^rightRotate(e,11)^rightRotate(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=i<16?w[i]:((w[i-16]+(rightRotate(w15,7)^rightRotate(w15,18)^(w15>>>3))+w[i-7]+(rightRotate(w2,17)^rightRotate(w2,19)^(w2>>>10)))|0)))|0;const temp2=((rightRotate(a,2)^rightRotate(a,13)^rightRotate(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2])))|0;hash=[(temp1+temp2)|0,a,hash[1],hash[2],(hash[3]+temp1)|0,e,hash[5],hash[6]]}for(i=0;i<8;i++)hash[i]=(hash[i]+old[i])|0}
+ for(i=0;i<8;i++)for(j=3;j+1;j--){const b=(hash[i]>>(j*8))&255;result+=(b<16?'0':'')+b.toString(16)}return result
+}
+async function sha(str){try{if(globalThis.crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}}catch(e){}return shaFallback(str)}
+function short(h){return h?h.slice(0,6)+'…'+h.slice(-6):'PENDING'}
+async function appendRecord(type,payload){const h=await sha((state.chainHead||'GENESIS')+'|'+type+'|'+JSON.stringify(payload));state.chainHead=h;state.hashes.push({type,hash:h,at:new Date().toISOString()});return h}
+function clamp(n,a=0,b=100){return Math.max(a,Math.min(b,n))}
+function avg(obj){const v=Object.values(obj);return Math.round(v.reduce((a,b)=>a+b,0)/v.length)}
+function jump(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:reduce?'auto':'smooth'})}
+
+// boot and reveal
+addEventListener('load',()=>setTimeout(()=>$('#boot').classList.add('out'),1250));
+const rvObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rvObs.unobserve(e.target)}}),{threshold:.12});$$('.rv').forEach(e=>rvObs.observe(e));
+
+// acts, rail, nav, progress
+const acts=$$('.act'), nav=$$('.stage-nav a'), chain=$('#act-chain');
+acts.forEach((a,i)=>{const x=document.createElement('a');x.className='act-dot';x.href='#'+a.id;x.innerHTML='<span>ACT '+String(i).padStart(2,'0')+' · '+a.dataset.act+'</span>';chain.appendChild(x)});
+const dots=$$('.act-dot');
+const actObs=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const i=acts.indexOf(e.target);dots.forEach((d,j)=>{d.classList.toggle('on',j===i);if(j<i)d.classList.add('done')});nav.forEach((n,j)=>n.classList.toggle('on',j===i));}),{threshold:.34});acts.forEach(a=>actObs.observe(a));
+addEventListener('scroll',()=>{const m=document.documentElement.scrollHeight-innerHeight;$('#progress span').style.width=(m?scrollY/m*100:0)+'%'},{passive:true});
+
+// theme/reset/narration
+$('#theme-btn').onclick=()=>{const light=document.documentElement.dataset.theme==='light';document.documentElement.dataset.theme=light?'dark':'light';$('#theme-btn').textContent=light?'Light':'Dark'};
+$('#reset-btn').onclick=()=>{if(confirm('Reset this institutional session?'))location.reload()};
+$('#narrate-btn').onclick=async()=>{
+  const current=acts.find(a=>{const r=a.getBoundingClientRect();return r.top<innerHeight*.45&&r.bottom>innerHeight*.45})||acts[0];
+  const text=(current.querySelector('h2,h1')?.textContent||'The Institution')+'. '+(current.querySelector('.lede')?.textContent||'');
+  try{
+    const res=await fetch('/api/narrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});
+    if(res.ok){const blob=await res.blob();new Audio(URL.createObjectURL(blob)).play();return}
+  }catch(e){}
+  if('speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.88;u.pitch=.86;speechSynthesis.speak(u);toast('Browser narration active · /api/narrate ready for ElevenLabs')}
+};
+
+// intake chips and genesis
+$$('#exposure-chips .chip').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
+sha('THE INSTITUTION|GENESIS|'+new Date().toISOString().slice(0,10)).then(h=>{state.chainHead=h;state.hashes.push({type:'GENESIS',hash:h,at:new Date().toISOString()});$('#genesis-hash').textContent=short(h)});
+
+function baseScores(){
+ const role=$('#role').value, inst=$('#institution').value, ex=state.exposures;
+ const s={authority:52,evidence:50,human:48,economics:51,succession:39};
+ if(role.includes('Risk')){s.evidence+=8;s.authority+=4} if(role.includes('Operating')){s.economics+=8;s.authority+=3} if(role.includes('Board')){s.succession+=7;s.evidence+=5} if(role.includes('PMO')){s.authority+=5;s.human+=5}
+ if(inst.includes('Bank')||inst.includes('Wealth'))s.evidence+=6; if(inst.includes('Private Equity'))s.economics+=7; if(ex.includes('Talent'))s.human+=6; if(ex.includes('Succession'))s.succession+=8; if(ex.includes('Regulatory'))s.evidence+=5; if(ex.includes('Cyber'))s.authority+=3;
+ Object.values(SYSTEMS).forEach(sys=>Object.entries(sys.effect).forEach(([k,v])=>s[k]+=v/8));
+ Object.keys(s).forEach(k=>s[k]=clamp(Math.round(s[k])));return s;
+}
+function renderFormation(){
+ const labels={authority:'Decision Authority',evidence:'Evidence Integrity',human:'Human Readiness',economics:'Economic Truth',succession:'Succession Resilience'};
+ $('#formation-scores').innerHTML=Object.entries(state.scores).map(([k,v])=>`<div class="score-row"><div class="score-head"><span>${labels[k]}</span><b>${v}%</b></div><div class="meter"><span data-v="${v}"></span></div></div>`).join('');
+ requestAnimationFrame(()=>$$('#formation-scores .meter span').forEach(x=>x.style.width=x.dataset.v+'%'));
+}
+async function assemble(){
+ state.exposures=$$('#exposure-chips .chip.on').map(c=>c.textContent.trim());
+ state.mandate={role:$('#role').value,institution:$('#institution').value,mandate:$('#mandate').value.trim(),horizon:$('#horizon option:checked').textContent,capital:$('#capital').value};
+ state.scores=baseScores();state.assembled=true;await appendRecord('MANDATE',{mandate:state.mandate,exposures:state.exposures,scores:state.scores});
+ $('#core-role').textContent=state.mandate.role.toUpperCase();
+ $$('.system-node').forEach((n,i)=>setTimeout(()=>n.classList.add('ready'),i*110));
+ $$('#network-svg .net-line').forEach((l,i)=>setTimeout(()=>l.classList.add('live'),i*90));
+ $('#signature-body').innerHTML=`<div class="sig-row"><span>ROLE</span><b>${state.mandate.role}</b></div><div class="sig-row"><span>INSTITUTION</span><b>${state.mandate.institution}</b></div><div class="sig-row"><span>MANDATE</span><b>${state.mandate.mandate}</b></div><div class="sig-row"><span>HORIZON</span><b>${state.mandate.horizon}</b></div><div class="sig-row"><span>EXPOSURE</span><b>${state.exposures.join(' · ')||'Unspecified'}</b></div>`;
+ renderFormation();$('#seal-assembly').disabled=false;$('#w-systems').textContent='8 / 8';toast('Institution assembled · 8 systems live');setTimeout(()=>jump('assembly'),220);
+}
+$('#assemble-btn').onclick=assemble;
+$$('.system-node').forEach(n=>n.onclick=()=>{const s=SYSTEMS[n.dataset.system];$$('.system-node').forEach(x=>x.classList.remove('active'));n.classList.add('active');$('#inspection').innerHTML=`<span class="tag">${s.role.toUpperCase()}</span><h4>${n.dataset.system}</h4><p>${s.text}</p>`});
+$('#seal-assembly').onclick=async()=>{
+ if(!state.assembled)return;await appendRecord('OPERATING_ORGANISM',{systems:Object.keys(SYSTEMS),scores:state.scores});$('#seal-assembly').textContent='OPERATING ORGANISM SEALED ✓';$('#seal-assembly').disabled=true;
+ renderDNA();$('#ratify-dna').disabled=false;toast('Assembly sealed into institutional record');setTimeout(()=>jump('dna'),350)
+};
+
+function renderDNA(){
+ const labels={authority:'Authority may outrun accountable ownership',evidence:'Evidence remains fragmented across systems',human:'Human judgment is not yet defined as a scarce institutional asset',economics:'Gross productivity can hide review and correction cost',succession:'The operating model still depends on its architect'};
+ $$('.strand').forEach(row=>{const k=row.dataset.key,v=state.scores[k];row.querySelector('i').style.width=v+'%';row.querySelector('.strand-score').textContent=v});
+ const weak=Object.entries(state.scores).sort((a,b)=>a[1]-b[1]).slice(0,3);
+ $('#mutation-list').innerHTML=weak.map(([k,v])=>`<div class="mutation"><b>${labels[k]}</b><p>${k.toUpperCase()} DNA is ${v}/100. This weakness will shape later crises unless converted into explicit policy and evidence.</p></div>`).join('');
+ $('#constitution-clause').textContent=`For ${state.mandate.institution}, no machine may spend, send, change, approve, publish, or promise beyond a visible authority boundary with a named human owner, tamper-evident record, economic measurement rule, and rehearsed stop condition.`;
+}
+$('#ratify-dna').onclick=async()=>{if(!state.assembled)return;state.dnaRatified=true;await appendRecord('INSTITUTIONAL_DNA',state.scores);$('#ratify-dna').textContent='DNA RATIFIED ✓';$('#ratify-dna').disabled=true;toast('Five constitutional strands ratified');jump('time')};
+
+function renderCrisis(i){
+ state.timelineIndex=i;const c=CRISES[i];$$('.time-tab').forEach((t,j)=>t.classList.toggle('on',j===i));
+ $('#crisis-kicker').textContent=c.when+' · '+c.kicker;$('#crisis-title').textContent=c.title;$('#crisis-body').textContent=c.body;
+ $('#signals').innerHTML=c.signals.map(s=>`<div class="signal"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('');
+ const committed=state.decisions.find(d=>d.index===i);
+ $('#decisions').innerHTML=c.choices.map((x,j)=>`<button class="decision ${committed&&committed.choice===j?'chosen good':''}" data-choice="${j}" ${committed?'disabled':''}><span class="letter">${String.fromCharCode(65+j)}</span><span><b>${x[0]}</b><span>${x[1]}</span></span></button>`).join('');
+ $$('#decisions .decision').forEach(b=>b.onclick=()=>commitDecision(i,+b.dataset.choice));
+ $('#consequence').textContent=committed?committed.consequence:'The next choice will alter authority, evidence, economics, people, and succession resilience.';
+}
+async function commitDecision(index,choice){
+ if(state.decisions.some(d=>d.index===index))return;const c=CRISES[index],type=c.choices[choice][2];
+ const delta= type==='balanced'?{authority:5,evidence:6,human:3,economics:3,succession:4}:type==='velocity'?{authority:-5,evidence:-7,human:-3,economics:5,succession:-4}:{authority:4,evidence:4,human:-2,economics:-6,succession:1};
+ Object.entries(delta).forEach(([k,v])=>state.scores[k]=clamp(state.scores[k]+v));
+ const consequences={balanced:'The institution gains evidence and bounded authority without surrendering operating momentum.',velocity:'The institution moves faster, but converts undocumented dependency into future institutional debt.',control:'The institution gains immediate containment while increasing delay, workarounds, and shadow behavior.'};
+ const decision={index,when:c.when,title:c.choices[choice][0],choice,type,consequence:consequences[type]};
+ decision.hash=await appendRecord('TIME_DECISION',decision);state.decisions.push(decision);
+ renderLedger();renderCrisis(index);renderFormation();$('#w-decisions').textContent=state.decisions.length+' / 5';toast('Decision committed · '+c.when);
+ if(index<4)setTimeout(()=>renderCrisis(index+1),650);
+}
+function renderLedger(){
+ $('#ledger').innerHTML=state.decisions.map(d=>`<div class="ledger-item"><span class="when">${d.when}</span><b>${d.title}</b><p>${d.consequence}</p><span class="when">SEAL ${short(d.hash)}</span></div>`).join('');
+}
+$$('.time-tab').forEach(t=>t.onclick=()=>renderCrisis(+t.dataset.time));renderCrisis(0);
+
+const gradeDims=['Clarity','Authority alignment','Evidence quality','Proportionality','Economic realism','Human consequence','Reversibility','Durability'];
+function renderEmptyGrade(){ $('#grade-list').innerHTML=gradeDims.map(x=>`<div class="grade-row"><span>${x}</span><b>—</b><div class="grade-bar"><i></i></div></div>`).join('') }renderEmptyGrade();
+$('#prefill-order').onclick=()=>{
+ const c=CRISES[state.timelineIndex];$('#o-situation').value=c.body;$('#o-decision').value='Authorize a constrained operating path that preserves service while preventing unowned external action.';$('#o-authority').value='The named business owner may approve bounded internal use. The control owner may suspend the capability. No model may self-expand its authority.';$('#o-risk').value='We accept slower benefit realization and limited manual review cost during the controlled period.';$('#o-control').value='Log every action and source, monitor unsupported claims, review overrides weekly, and preserve the tamper-evident decision record.';$('#o-owner').value=state.mandate.role||'Chief AI Officer';$('#o-trigger').value='Suspend or return to the board if external action occurs without approval, evidence integrity fails, or review cost removes the claimed benefit.';toast('Current crisis loaded into command order')
+};
+function scoreText(values){
+ const all=values.join(' ').toLowerCase(), lens=values.map(x=>x.trim().length);
+ const has=(words)=>words.some(w=>all.includes(w));
+ return [
+  clamp(Math.round(lens.reduce((a,b)=>a+b,0)/14),30,96),
+  clamp(45+(has(['authority','approve','override','stop','suspend'])?35:0)+(values[2].length>70?12:0)),
+  clamp(42+(has(['evidence','record','log','source','audit','replay'])?42:0)),
+  clamp(45+(has(['bounded','limited','proportionate','contain','preserve'])?38:0)),
+  clamp(40+(has(['cost','benefit','review','rework','economic'])?43:0)),
+  clamp(38+(has(['human','employee','judgment','reviewer','people'])?45:0)),
+  clamp(42+(has(['trigger','reverse','suspend','reconsider','threshold'])?43:0)),
+  clamp(38+(has(['successor','survive','policy','institution','owner'])?45:0))
+ ];
+}
+$('#commit-order').onclick=async()=>{
+ const ids=['#o-situation','#o-decision','#o-authority','#o-risk','#o-control','#o-owner','#o-trigger'],values=ids.map(id=>$(id).value.trim());
+ if(values.some(v=>v.length<12)){toast('Complete every authority field with operational detail');return}
+ const scores=scoreText(values),total=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);state.orderScore=total;state.order={situation:values[0],decision:values[1],authority:values[2],risk:values[3],control:values[4],owner:values[5],trigger:values[6],scores,total};
+ $('#grade-total').innerHTML=total+'<small>/100</small>';$$('#grade-list .grade-row').forEach((r,i)=>{r.querySelector('b').textContent=scores[i];r.querySelector('i').style.width=scores[i]+'%'});
+ $('#grade-note').textContent=total>=80?'Command accepted: the institution can identify who acts, what is evidenced, what risk remains, and when authority reverses.':total>=65?'Command is operable, but one or more boundaries remain dependent on interpretation.':'Command remains too dependent on intention. Strengthen ownership, evidence, and reversal conditions.';
+ const h=await appendRecord('AUTHORITY_ORDER',state.order);state.order.hash=h;$('#order-hash').textContent='SHA-256 · '+short(h);$('#w-order').textContent='SEALED';toast('Authority command sealed');generateFutures();jump('futures')
+};
+
+function generateFutures(){
+ const v=state.orderScore||55,balanced=state.decisions.filter(d=>d.type==='balanced').length,vel=state.decisions.filter(d=>d.type==='velocity').length,weak=Object.entries(state.scores).sort((a,b)=>a[1]-b[1])[0][0];
+ const pa=clamp(48+Math.round(v*.35)+balanced*3-vel*4,35,91),pb=clamp(78-pa/2,24,62),pc=clamp(28+vel*7+(60-state.scores[weak])*.35,18,72);
+ $('#future-a-title').textContent=v>=78?'Bounded authority scales':'Operating momentum outruns certainty';$('#future-a-prob').textContent=pa+'%';$('#future-a-body').textContent=v>=78?'Your order creates a viable path to scale because authority, evidence, and reversal remain connected.':'The institution can move, but later actors may interpret the order more broadly than you intended.';$('#future-a-list').innerHTML=`<li>${balanced} proportionate decisions preserved optionality</li><li>Command quality scored ${v}/100</li><li>${state.scores.evidence}/100 evidence integrity at current state</li>`;
+ $('#future-b-title').textContent='Containment-first alternative';$('#future-b-prob').textContent=pb+'%';$('#future-b-body').textContent='A stricter path reduces immediate exposure but increases delay, shadow work, and pressure to bypass the control model.';$('#future-b-list').innerHTML='<li>Lower short-term operating risk</li><li>Higher probability of shadow adoption</li><li>Benefit realization deferred beyond sponsor patience</li>';
+ const hidden={authority:'The stop mechanism depends on status, not design',evidence:'The institution can act faster than it can explain',human:'Review labor becomes the invisible operating model',economics:'Gross benefit survives only while correction cost is excluded',succession:'The system works because one person still interprets it'}[weak];
+ $('#future-c-title').textContent=hidden;$('#future-c-prob').textContent=pc+'%';$('#future-c-body').textContent=`Your weakest strand is ${weak.toUpperCase()} DNA. The invisible future is not a technical failure; it is an institutional dependency that compounds quietly.`;$('#future-c-list').innerHTML=`<li>${weak.toUpperCase()} DNA currently ${state.scores[weak]}/100</li><li>Failure remains latent while the architect is present</li><li>Year-5 evidence exposes the dependency</li>`;
+ $('#observatory-line').textContent=`“You may successfully deliver the mandate and still create an institution that cannot survive the person who made it coherent.”`;
+}
+
+function renderBoard(){
+ $('#board-list').innerHTML=BOARD.map((b,i)=>`<button class="board-member ${i===boardActive?'on':''}" data-i="${i}"><span class="avatar">${b.initials}</span><span><b>${b.name}</b><span>${b.role}</span></span></button>`).join('');
+ $$('#board-list .board-member').forEach(b=>b.onclick=()=>{boardActive=+b.dataset.i;showBoard()});showBoard();
+}
+function showBoard(){const b=BOARD[boardActive];$$('.board-member').forEach((x,i)=>x.classList.toggle('on',i===boardActive));$('#speaker-avatar').textContent=b.initials;$('#speaker-name').textContent=b.name;$('#speaker-role').textContent=b.role;$('#challenge').textContent='“'+b.q+'”';$('#board-response').value='';$('#board-score').textContent='—'}
+$('#answer-board').onclick=async()=>{
+ const text=$('#board-response').value.trim();if(text.length<40){toast('Answer from the record with more operational detail');return}
+ const low=text.toLowerCase(),evidence=['record','evidence','owner','authority','stop','risk','trigger','cost','human','board'].filter(w=>low.includes(w)).length;const score=clamp(48+evidence*5+Math.min(12,text.length/25),50,96);const b=BOARD[boardActive];const response={stakeholder:b.name,question:b.q,response:text,score:Math.round(score)};response.hash=await appendRecord('BOARD_RESPONSE',response);state.boardResponses.push(response);$('#board-score').textContent=Math.round(score);$('#board-transcript').innerHTML+=`<div class="transcript-line"><b>${b.name.toUpperCase()}</b> · Response sealed at ${Math.round(score)}/100 evidence quality.</div>`;$('#w-board').textContent=state.boardResponses.length;toast('Board response entered into evidence');
+ if(boardActive<BOARD.length-1){boardActive++;setTimeout(showBoard,500)}
+};renderBoard();
+
+function verdictFrom(score,weak){
+ if(score>=84&&state.scores.succession>=70)return['DURABLE','The Durable Institution','Authority, evidence, economics, people, and succession remain coherent beyond the current architect.'];
+ if(state.scores.succession<55)return['DEPENDENCY','The Brilliant Dependency','The institution performs impressively, but too much coherence still resides in one leader’s judgment.'];
+ if(state.scores.authority<60)return['MIRAGE','The Autonomous Mirage','Machines appear empowered, but real authority is distributed through undocumented human intervention.'];
+ if(state.scores.economics<60)return['VALUE GAP','The Invisible Bureaucracy','Control activity has grown faster than measurable institutional value.'];
+ if(state.scores.human<60)return['HUMAN DEBT','The Displaced Institution','Execution accelerated before the institution defined what human judgment must remain.'];
+ return['CONTROLLED','The Controlled Machine','The institution is defensible and coherent, but its control model may be constraining adaptive speed.'];
+}
+$('#run-autopsy').onclick=async()=>{
+ if(!state.assembled||!state.order){toast('Assemble the institution and commit an authority order first');return}
+ const decisionQuality=state.decisions.length?state.decisions.reduce((a,d)=>a+(d.type==='balanced'?88:d.type==='control'?68:52),0)/state.decisions.length:45;
+ const boardQuality=state.boardResponses.length?state.boardResponses.reduce((a,b)=>a+b.score,0)/state.boardResponses.length:50;
+ const durability=clamp(Math.round(avg(state.scores)*.5+state.orderScore*.25+decisionQuality*.15+boardQuality*.10),35,96);
+ const weak=Object.entries(state.scores).sort((a,b)=>a[1]-b[1])[0];const [code,title,body]=verdictFrom(durability,weak);
+ state.verdict={code,title,body,durability,weak};await appendRecord('INSTITUTIONAL_AUTOPSY',state.verdict);$('#verdict-code').innerHTML=code.replace(' ','<br>');$('#verdict-title').textContent=title;$('#verdict-body').textContent=body;$('#durability').innerHTML=durability+'<small>/100</small>';$('#rail-durability').textContent=durability;$('#w-verdict').textContent=code;
+ const strongest=Object.entries(state.scores).sort((a,b)=>b[1]-a[1])[0];
+ $('#autopsy-findings').innerHTML=`<div class="finding"><div class="f-label">AUTHORITY</div><div><b>${state.scores.authority}/100 · ${state.order.owner}</b><p>The operating order defines who acts, who may stop, and how authority reverses.</p></div></div><div class="finding"><div class="f-label">EVIDENCE</div><div><b>${state.scores.evidence}/100 · ${state.order.hash?short(state.order.hash):'Unsealed'}</b><p>The institution’s explanation quality is limited by the weakest surviving record, not the strongest policy statement.</p></div></div><div class="finding"><div class="f-label">STRONGEST DNA</div><div><b>${strongest[0].toUpperCase()} · ${strongest[1]}/100</b><p>This strand currently carries the institution’s greatest resilience.</p></div></div><div class="finding"><div class="f-label">WEAKEST DNA</div><div><b>${weak[0].toUpperCase()} · ${weak[1]}/100</b><p>This is the dependency most likely to surface after leadership turnover or regulatory reconstruction.</p></div></div><div class="contradiction"><h4>Institutional contradiction</h4><p>${weak[0]==='succession'?'You designed strong controls, but too much of their meaning still depends on the person who designed them.':weak[0]==='economics'?'The institution can prove control more readily than it can prove net value.':weak[0]==='human'?'The system identifies human approval, but has not fully defined which human judgment must never be automated.':'Your stated operating principle is stronger than the evidence supporting it.'}</p></div>`;
+ await generateCharter();toast('Institutional autopsy complete');jump('record')
+};
+
+async function generateCharter(){
+ const id='INST-'+new Date().toISOString().slice(0,10).replaceAll('-','')+'-'+Math.random().toString(36).slice(2,7).toUpperCase();
+ const decisions=state.decisions.map(d=>`${d.when}: ${d.title}`).join('; ')||'No time-compression decisions recorded';
+ const weak=state.verdict.weak;
+ $('#charter-id').textContent=id+' · '+state.verdict.code;
+ $('#charter-body').innerHTML=`<div class="charter-section"><h4>Mandate</h4><p><strong>${state.mandate.role}</strong> · ${state.mandate.institution} · ${state.mandate.horizon}<br>${state.mandate.mandate}</p></div><div class="charter-section"><h4>Operating architecture</h4><p>KEEL governs decision provenance; RegTwin AI monitors regulatory impact; BLACKBOX preserves the institutional record; AgentPMO controls the agent estate; TalentOracle exposes key-person risk; ERIS Pro coordinates risk; BISO provides security immunity; The Studio builds human command capability.</p></div><div class="charter-section"><h4>Authority order</h4><p><strong>Decision:</strong> ${state.order.decision}<br><strong>Authority:</strong> ${state.order.authority}<br><strong>Owner:</strong> ${state.order.owner}</p></div><div class="charter-section"><h4>Risk and control</h4><p><strong>Risk accepted:</strong> ${state.order.risk}<br><strong>Control:</strong> ${state.order.control}<br><strong>Reversal trigger:</strong> ${state.order.trigger}</p></div><div class="charter-section"><h4>Decision history</h4><p>${decisions}</p></div><div class="charter-section"><h4>Durability verdict</h4><p><strong>${state.verdict.title} · ${state.verdict.durability}/100</strong><br>${state.verdict.body}<br>Primary succession vulnerability: ${weak[0].toUpperCase()} DNA at ${weak[1]}/100.</p></div>`;
+ const rec=recordPayload(id);state.terminalHash=await sha((state.chainHead||'GENESIS')+'|INSTITUTIONAL_RECORD|'+JSON.stringify(rec));$('#terminal-hash').textContent='TERMINAL HASH · '+state.terminalHash;state.recordId=id;
+}
+function recordPayload(id=state.recordId||'DRAFT'){return{id,created:new Date().toISOString(),mandate:state.mandate,exposures:state.exposures,scores:state.scores,decisions:state.decisions,order:state.order,boardResponses:state.boardResponses,verdict:state.verdict,evidenceChain:state.hashes,terminalHash:state.terminalHash}}
+$('#download-json').onclick=()=>{if(!state.verdict){toast('Run the institutional autopsy first');return}const blob=new Blob([JSON.stringify(recordPayload(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='institutional-record-'+state.recordId+'.json';a.click();URL.revokeObjectURL(a.href)};
+$('#print-charter').onclick=()=>{if(!state.verdict){toast('Generate the charter first');return}print()};
+$('#copy-brief').onclick=async()=>{if(!state.verdict){toast('Generate the charter first');return}const text=`${state.recordId}\n${state.verdict.title} · ${state.verdict.durability}/100\nMandate: ${state.mandate.mandate}\nDecision: ${state.order.decision}\nOwner: ${state.order.owner}\nRisk accepted: ${state.order.risk}\nReversal trigger: ${state.order.trigger}\nTerminal hash: ${state.terminalHash}`;await navigator.clipboard.writeText(text);toast('Board brief copied')};
+
+// chief of staff
+$('#cos-toggle').onclick=()=>$('#cos').classList.toggle('open');$('#cos-close').onclick=()=>$('#cos').classList.remove('open');
+function cosReply(q){const x=q.toLowerCase(),weak=Object.entries(state.scores).sort((a,b)=>a[1]-b[1])[0]||['succession',0];
+ if(x.includes('authority')||x.includes('owner'))return state.order?`Your named owner is ${state.order.owner}. The remaining test is whether that person can actually stop the system without executive improvisation.`:'Authority remains uncommitted. The institution has architecture, but no binding order identifying who may act, approve, override, or stop.';
+ if(x.includes('evidence')||x.includes('prove'))return `Evidence DNA is ${state.scores.evidence||0}/100. Strong logging is not enough; the record must connect source, authority, control, override, and consequence.`;
+ if(x.includes('risk'))return state.order?`You accepted: ${state.order.risk}. The critical question is whether this acceptance is visible to someone who was not in the room.`:'No accepted risk is yet visible in the institutional record.';
+ if(x.includes('weak')||x.includes('failure'))return `The weakest current strand is ${weak[0].toUpperCase()} DNA at ${weak[1]}/100. That is where a successful program is most likely to become a fragile institution.`;
+ if(x.includes('next'))return !state.assembled?'Assemble the institution.':!state.dnaRatified?'Ratify the DNA.':state.decisions.length<5?'Complete the five time-compression decisions.':!state.order?'Issue the authority order.':!state.verdict?'Face the board, then run the autopsy.':'Use the charter as the board-level operating record.';
+ return `I would test three things next: the stop owner, the net economic benefit after review cost, and whether a successor can interpret the control boundary without you.`;}
+function sendCos(){const q=$('#cos-input').value.trim();if(!q)return;$('#cos-log').innerHTML+=`<div class="cos-msg you">${q.replace(/[<>]/g,'')}</div>`;$('#cos-input').value='';setTimeout(()=>{$('#cos-log').innerHTML+=`<div class="cos-msg ai">${cosReply(q)}</div>`;$('#cos-log').scrollTop=$('#cos-log').scrollHeight},220)}
+$('#cos-send').onclick=sendCos;$('#cos-input').addEventListener('keydown',e=>{if(e.key==='Enter')sendCos()});
+
+// persistence-safe summary update
+function updateWallet(){ $('#w-systems').textContent=state.assembled?'8 / 8':'0 / 8';$('#w-decisions').textContent=state.decisions.length+' / 5';$('#w-order').textContent=state.order?'SEALED':'OPEN';$('#w-board').textContent=state.boardResponses.length;$('#w-verdict').textContent=state.verdict?state.verdict.code:'PENDING' }
+setInterval(updateWallet,800);
+})();
+</script>
+</body>
+</html>
