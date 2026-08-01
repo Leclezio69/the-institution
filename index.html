@@ -759,11 +759,17 @@ function showBoard(){
  else{$('#board-response').placeholder='Answer from the operating record, not from intention.';$('#board-response').disabled=false;$('#answer-board').disabled=false}
  // progress and completion
  var info=answered+' / '+total+' board members answered';
- if(answered>=total)info+=' — ALL COMPLETE';
+ if(answered>=total)info='ALL 6 BOARD MEMBERS ANSWERED — SESSION COMPLETE';
  else if(answered>=3)info+=' — minimum met, you may proceed or answer more';
  var progressEl=$('#board-progress');
- if(!progressEl){var p=document.createElement('div');p.id='board-progress';p.style.cssText='font:400 9px IBM Plex Mono,monospace;color:var(--dim);margin-top:12px;padding-top:12px;border-top:1px solid var(--line2)';$('.board-chamber').appendChild(p);progressEl=p}
- progressEl.innerHTML=info+(answered>=3?'<br><button class=”btn primary small” style=”margin-top:8px” id=”go-autopsy”>Proceed to Autopsy →</button>':'');
+ if(!progressEl){var p=document.createElement('div');p.id='board-progress';p.style.cssText='font:400 9px IBM Plex Mono,monospace;color:var(--dim);margin-top:12px;padding-top:12px;border-top:1px solid var(--line2);text-align:center';$('.board-chamber').appendChild(p);progressEl=p}
+ if(answered>=total){
+  progressEl.innerHTML='<b style=”color:var(--gold2);letter-spacing:.14em”>'+info+'</b><p style=”color:var(--muted);font-size:11px;margin:8px 0”>The board has heard your evidence. Proceed to the institutional autopsy to discover what your decisions actually built.</p><button class=”btn primary” style=”margin-top:8px” id=”go-autopsy”>Run Institutional Autopsy →</button>';
+ }else if(answered>=3){
+  progressEl.innerHTML=info+'<br><button class=”btn primary small” style=”margin-top:8px” id=”go-autopsy”>Proceed to Autopsy →</button>';
+ }else{
+  progressEl.innerHTML=info;
+ }
  if($('#go-autopsy'))$('#go-autopsy').onclick=function(){jump('autopsy')};
 }
 $('#answer-board').onclick=async()=>{
