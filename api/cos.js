@@ -44,35 +44,55 @@ Rules:
 - Push back when answers rely on intention instead of evidence
 - You may warn about consequences the user has not considered`;
 
-  try {
-    const upstream = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: process.env.ANTHROPIC_MODEL_ID || 'claude-sonnet-4-6-20250725',
-        max_tokens: 300,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: question }]
-      })
-    });
+  // Try models from newest to oldest until one works
+  const models = process.env.ANTHROPIC_MODEL_ID
+    ? [process.env.ANTHROPIC_MODEL_ID]
+    : [
+        'claude-sonnet-5',
+        'claude-sonnet-4-6-20250725',
+        'claude-sonnet-4-20250514',
+        'claude-3-7-sonnet-20250219',
+        'claude-3-5-sonnet-20241022'
+      ];
 
-    if (!upstream.ok) {
+  for (const model of models) {
+    try {
+      const upstream = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 300,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: question }]
+        })
+      });
+
+      if (upstream.ok) {
+        const data = await upstream.json();
+        const reply = data.content?.[0]?.text || 'The Chief of Staff has no response.';
+        res.setHeader('Cache-Control', 'private, no-store');
+        return res.status(200).json({ reply, model });
+      }
+
       const detail = await upstream.text();
+      // If model not found, try next one
+      if (upstream.status === 404) {
+        console.log('Model not available:', model);
+        continue;
+      }
+      // Other errors (auth, rate limit) — don't retry
       console.error('Anthropic error:', upstream.status, detail);
       return res.status(502).json({ error: 'Chief of Staff unavailable.', status: upstream.status, detail: detail.substring(0, 200) });
+    } catch (error) {
+      console.error('CoS fetch error for model', model, ':', error.message);
+      continue;
     }
-
-    const data = await upstream.json();
-    const reply = data.content?.[0]?.text || 'The Chief of Staff has no response.';
-
-    res.setHeader('Cache-Control', 'private, no-store');
-    return res.status(200).json({ reply });
-  } catch (error) {
-    console.error('CoS endpoint failure:', error);
-    return res.status(500).json({ error: 'Chief of Staff service unavailable.' });
   }
+
+  return res.status(502).json({ error: 'No available Claude model found. Set ANTHROPIC_MODEL_ID in Vercel env vars.' });
 }
