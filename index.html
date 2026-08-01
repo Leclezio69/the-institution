@@ -683,11 +683,22 @@ async function commitDecision(index,choice){
  const overAuto=Object.entries(state.autonomy).filter(([n,v])=>v-SYS_AUTONOMY[n].preferred>20).length;
  if(overAuto>0)Object.keys(delta).forEach(k=>{if(delta[k]<0)delta[k]=Math.round(delta[k]*(1+overAuto*0.15))});
  Object.entries(delta).forEach(([k,v])=>state.scores[k]=clamp(state.scores[k]+v));
- const consequences={balanced:'The institution gains evidence and bounded authority without surrendering operating momentum.',velocity:'The institution moves faster, but converts undocumented dependency into future institutional debt.',control:'The institution gains immediate containment while increasing delay, workarounds, and shadow behavior.'};
- const decision={index,when:c.when,title:c.choices[choice][0],choice,type,consequence:consequences[type]};
+ const CONSEQ=[
+  {balanced:'The agent operates under named human approval with full logging. Speed is constrained but authority is visible.',velocity:'The agent is live without governance artifacts. Speed is real, but no one can explain who authorized it.',control:'No agent moves until every artifact is complete. The control team gains time; the sponsor loses patience.'},
+  {balanced:'The benefit is rebased to include review, rework, and correction cost. The real number is smaller but defensible.',velocity:'The headline survives another quarter. Review cost remains invisible until someone asks the wrong question.',control:'The program is frozen while economics are proven. Shadow workarounds begin within two weeks.'},
+  {balanced:'The shadow agent is contained: external actions disabled, records preserved, ownership assigned. Revenue pipeline is paused for reassessment.',velocity:'The shadow agent is quietly absorbed. Pipeline is protected, but no one documented how 3,214 client records were touched.',control:'All agents stop. The governance model is rebuilt from scratch. Three business units escalate to the board.'},
+  {balanced:'Authority exceptions are converted into policy. Successors are rehearsed. The architect leaves with institutional knowledge transferred.',velocity:'The architect stays for now. The structural problem is deferred. Thirty-seven exceptions remain undocumented.',control:'Authority moves to a committee. Speed drops. The committee has authority but not the judgment the architect carried.'},
+  {balanced:'The institution replays the full decision record: authority, evidence, controls, overrides, and provenance. The regulator sees a system, not a person.',velocity:'Leadership testifies from memory and policy summaries. The regulator sees intention, not evidence.',control:'The institution argues the model has changed. The regulator asks why the authority boundary did not.'}
+ ];
+ var cq=CONSEQ[index]||{balanced:'Bounded authority preserved.',velocity:'Speed prioritized over evidence.',control:'Containment prioritized over momentum.'};
+ const decision={index,when:c.when,title:c.choices[choice][0],choice,type,consequence:cq[type]};
  decision.hash=await appendRecord('TIME_DECISION',decision);state.decisions.push(decision);
  renderLedger();renderCrisis(index);renderFormation();$('#w-decisions').textContent=state.decisions.length+' / 5';toast('Decision committed · '+c.when);
  if(index<4)setTimeout(()=>renderCrisis(index+1),650);
+ if(state.decisions.length>=5)setTimeout(showTimeComplete,800);
+}
+function showTimeComplete(){
+ $('#consequence').innerHTML='<div style="text-align:center;padding:8px 0"><b style="color:var(--gold2);font:500 10px IBM Plex Mono,monospace;letter-spacing:.14em">ALL 5 DECISIONS COMMITTED</b><p style="color:var(--muted);font-size:12px;margin:8px 0">Your decision record is sealed. The institution now carries these choices forward into every future act.</p><button class="btn primary" style="margin-top:10px" onclick="jump(\'authority\')">Proceed to Authority Chamber →</button></div>';
 }
 function renderLedger(){
  $('#ledger').innerHTML=state.decisions.map(d=>`<div class="ledger-item"><span class="when">${d.when}</span><b>${d.title}</b><p>${d.consequence}</p><span class="when">SEAL ${short(d.hash)}</span></div>`).join('');
