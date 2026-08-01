@@ -748,11 +748,30 @@ function renderBoard(){
  $('#board-list').innerHTML=BOARD.map((b,i)=>`<button class="board-member ${i===boardActive?'on':''}" data-i="${i}"><span class="avatar">${b.initials}</span><span><b>${b.name}</b><span>${b.role}</span></span></button>`).join('');
  $$('#board-list .board-member').forEach(b=>b.onclick=()=>{boardActive=+b.dataset.i;showBoard()});showBoard();
 }
-function showBoard(){const b=BOARD[boardActive];$$('.board-member').forEach((x,i)=>x.classList.toggle('on',i===boardActive));$('#speaker-avatar').textContent=b.initials;$('#speaker-name').textContent=b.name;$('#speaker-role').textContent=b.role;$('#challenge').textContent='“'+b.q+'”';$('#board-response').value='';$('#board-score').textContent='—'}
+function showBoard(){
+ const b=BOARD[boardActive];
+ $$('.board-member').forEach((x,i)=>{x.classList.toggle('on',i===boardActive);var answered=state.boardResponses.some(r=>r.stakeholder===BOARD[i].name);if(answered)x.style.opacity='0.5'});
+ $('#speaker-avatar').textContent=b.initials;$('#speaker-name').textContent=b.name;$('#speaker-role').textContent=b.role;$('#challenge').textContent='”'+b.q+'”';$('#board-response').value='';$('#board-score').textContent='—';
+ // show progress
+ var answered=state.boardResponses.length,total=BOARD.length;
+ var already=state.boardResponses.some(r=>r.stakeholder===b.name);
+ if(already){$('#board-response').placeholder='Already answered. Select another board member or proceed.';$('#board-response').disabled=true;$('#answer-board').disabled=true}
+ else{$('#board-response').placeholder='Answer from the operating record, not from intention.';$('#board-response').disabled=false;$('#answer-board').disabled=false}
+ // progress and completion
+ var info=answered+' / '+total+' board members answered';
+ if(answered>=total)info+=' — ALL COMPLETE';
+ else if(answered>=3)info+=' — minimum met, you may proceed or answer more';
+ var progressEl=$('#board-progress');
+ if(!progressEl){var p=document.createElement('div');p.id='board-progress';p.style.cssText='font:400 9px IBM Plex Mono,monospace;color:var(--dim);margin-top:12px;padding-top:12px;border-top:1px solid var(--line2)';$('.board-chamber').appendChild(p);progressEl=p}
+ progressEl.innerHTML=info+(answered>=3?'<br><button class=”btn primary small” style=”margin-top:8px” id=”go-autopsy”>Proceed to Autopsy →</button>':'');
+ if($('#go-autopsy'))$('#go-autopsy').onclick=function(){jump('autopsy')};
+}
 $('#answer-board').onclick=async()=>{
- const text=$('#board-response').value.trim();if(text.length<40){toast('Answer from the record with more operational detail');return}
- const low=text.toLowerCase(),evidence=['record','evidence','owner','authority','stop','risk','trigger','cost','human','board'].filter(w=>low.includes(w)).length;const refusePenalty=state.dnaRefused?12:0;const score=clamp(48+evidence*5+Math.min(12,text.length/25)-refusePenalty,35,96);const b=BOARD[boardActive];const response={stakeholder:b.name,question:b.q,response:text,score:Math.round(score)};response.hash=await appendRecord('BOARD_RESPONSE',response);state.boardResponses.push(response);$('#board-score').textContent=Math.round(score);$('#board-transcript').innerHTML+=`<div class="transcript-line"><b>${b.name.toUpperCase()}</b> · Response sealed at ${Math.round(score)}/100 evidence quality.</div>`;$('#w-board').textContent=state.boardResponses.length;toast('Board response entered into evidence');
- if(boardActive<BOARD.length-1){boardActive++;setTimeout(showBoard,500)}
+ const text=$('#board-response').value.trim();
+ if(text.length<10){toast('Write at least a short response to the board member');return}
+ if(text.length<40){toast('Tip: longer answers referencing evidence, authority, risk, and cost score higher')}
+ const low=text.toLowerCase(),evidence=['record','evidence','owner','authority','stop','risk','trigger','cost','human','board'].filter(w=>low.includes(w)).length;const refusePenalty=state.dnaRefused?12:0;const score=clamp(48+evidence*5+Math.min(12,text.length/25)-refusePenalty,35,96);const b=BOARD[boardActive];const response={stakeholder:b.name,question:b.q,response:text,score:Math.round(score)};response.hash=await appendRecord('BOARD_RESPONSE',response);state.boardResponses.push(response);$('#board-score').textContent=Math.round(score);$('#board-transcript').innerHTML+=`<div class=”transcript-line”><b>${b.name.toUpperCase()}</b> · Response sealed at ${Math.round(score)}/100 evidence quality.</div>`;$('#w-board').textContent=state.boardResponses.length;toast('Board response entered into evidence');
+ if(boardActive<BOARD.length-1){boardActive++;setTimeout(showBoard,500)}else{showBoard()}
 };renderBoard();
 
 function verdictFrom(score,weak){
