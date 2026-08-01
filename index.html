@@ -799,9 +799,7 @@ function narrateAct(actId){
   const section=document.getElementById(actId);if(!section)return;
   const heading=section.querySelector('h2,h1')?.textContent||'The Institution';
   const lede=section.querySelector('.lede')?.textContent||'';
-  const g=GUIDE[actId];
-  const full=heading+'. '+lede+(g?' . '+g.what+' '+g.how:'');
-  narrateText(full);
+  narrateText(heading+'. '+lede);
 }
 
 // narrate button: toggle — click while playing stops, otherwise starts

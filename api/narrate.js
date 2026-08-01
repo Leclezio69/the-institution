@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const endpoint = `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream?output_format=mp3_44100_128`;
+    const endpoint = `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream?output_format=mp3_22050_32&optimize_streaming_latency=3`;
     const upstream = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -37,8 +37,8 @@ export default async function handler(req, res) {
         voice_settings: {
           stability: 0.52,
           similarity_boost: 0.82,
-          style: 0.18,
-          use_speaker_boost: true
+          style: 0.0,
+          use_speaker_boost: false
         }
       })
     });
@@ -49,11 +49,17 @@ export default async function handler(req, res) {
       return res.status(upstream.status).json({ error: 'Narration generation failed.' });
     }
 
-    const audio = Buffer.from(await upstream.arrayBuffer());
+    // Stream audio chunks directly instead of buffering the full response
     res.setHeader('Content-Type', 'audio/mpeg');
     res.setHeader('Cache-Control', 'private, no-store');
-    res.setHeader('Content-Length', String(audio.length));
-    return res.status(200).send(audio);
+    res.setHeader('Transfer-Encoding', 'chunked');
+    const reader = upstream.body.getReader();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      res.write(Buffer.from(value));
+    }
+    return res.end();
   } catch (error) {
     console.error('Narration endpoint failure:', error);
     return res.status(500).json({ error: 'Narration service unavailable.' });
