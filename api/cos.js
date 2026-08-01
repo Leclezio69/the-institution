@@ -66,7 +66,7 @@ Rules:
         },
         body: JSON.stringify({
           model,
-          max_tokens: 300,
+          max_tokens: 1024,
           system: systemPrompt,
           messages: [{ role: 'user', content: question }]
         })
@@ -74,8 +74,9 @@ Rules:
 
       if (upstream.ok) {
         const data = await upstream.json();
-        console.log('Anthropic response keys:', JSON.stringify(Object.keys(data)), 'content:', JSON.stringify(data.content?.slice(0,1)));
-        const reply = data.content?.[0]?.text || data.output?.text || JSON.stringify(data);
+        // Find the text block (skip thinking blocks from extended thinking models)
+        const textBlock = data.content?.find(b => b.type === 'text');
+        const reply = textBlock?.text || data.content?.[0]?.text || 'The Chief of Staff has no response.';
         res.setHeader('Cache-Control', 'private, no-store');
         return res.status(200).json({ reply, model });
       }
