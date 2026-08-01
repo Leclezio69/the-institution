@@ -74,7 +74,8 @@ Rules:
 
       if (upstream.ok) {
         const data = await upstream.json();
-        const reply = data.content?.[0]?.text || 'The Chief of Staff has no response.';
+        console.log('Anthropic response keys:', JSON.stringify(Object.keys(data)), 'content:', JSON.stringify(data.content?.slice(0,1)));
+        const reply = data.content?.[0]?.text || data.output?.text || JSON.stringify(data);
         res.setHeader('Cache-Control', 'private, no-store');
         return res.status(200).json({ reply, model });
       }
