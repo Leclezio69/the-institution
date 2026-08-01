@@ -757,16 +757,32 @@ $('#download-json').onclick=()=>{if(!state.verdict){toast('Run the institutional
 $('#print-charter').onclick=()=>{if(!state.verdict){toast('Generate the charter first');return}print()};
 $('#copy-brief').onclick=async()=>{if(!state.verdict){toast('Generate the charter first');return}const text=`${state.recordId}\n${state.verdict.title} · ${state.verdict.durability}/100\nMandate: ${state.mandate.mandate}\nDecision: ${state.order.decision}\nOwner: ${state.order.owner}\nRisk accepted: ${state.order.risk}\nReversal trigger: ${state.order.trigger}\nTerminal hash: ${state.terminalHash}`;await navigator.clipboard.writeText(text);toast('Board brief copied')};
 
-// chief of staff
+// chief of staff (Claude-powered)
 $('#cos-toggle').onclick=()=>$('#cos').classList.toggle('open');$('#cos-close').onclick=()=>$('#cos').classList.remove('open');
-function cosReply(q){const x=q.toLowerCase(),weak=Object.entries(state.scores).sort((a,b)=>a[1]-b[1])[0]||['succession',0];
- if(x.includes('authority')||x.includes('owner'))return state.order?`Your named owner is ${state.order.owner}. The remaining test is whether that person can actually stop the system without executive improvisation.`:'Authority remains uncommitted. The institution has architecture, but no binding order identifying who may act, approve, override, or stop.';
- if(x.includes('evidence')||x.includes('prove'))return `Evidence DNA is ${state.scores.evidence||0}/100. Strong logging is not enough; the record must connect source, authority, control, override, and consequence.`;
- if(x.includes('risk'))return state.order?`You accepted: ${state.order.risk}. The critical question is whether this acceptance is visible to someone who was not in the room.`:'No accepted risk is yet visible in the institutional record.';
- if(x.includes('weak')||x.includes('failure'))return `The weakest current strand is ${weak[0].toUpperCase()} DNA at ${weak[1]}/100. That is where a successful program is most likely to become a fragile institution.`;
- if(x.includes('next'))return !state.assembled?'Assemble the institution.':!state.dnaRatified?'Ratify the DNA.':state.decisions.length<5?'Complete the five time-compression decisions.':!state.order?'Issue the authority order.':!state.verdict?'Face the board, then run the autopsy.':'Use the charter as the board-level operating record.';
- return `I would test three things next: the stop owner, the net economic benefit after review cost, and whether a successor can interpret the control boundary without you.`;}
-function sendCos(){const q=$('#cos-input').value.trim();if(!q)return;$('#cos-log').innerHTML+=`<div class="cos-msg you">${q.replace(/[<>]/g,'')}</div>`;$('#cos-input').value='';setTimeout(()=>{$('#cos-log').innerHTML+=`<div class="cos-msg ai">${cosReply(q)}</div>`;$('#cos-log').scrollTop=$('#cos-log').scrollHeight},220)}
+function cosContext(){
+ return {
+  assembled:state.assembled,dnaRatified:state.dnaRatified,dnaRefused:state.dnaRefused,
+  mandate:state.mandate,exposures:state.exposures,scores:state.scores,autonomy:state.autonomy,
+  decisions:state.decisions.map(d=>({when:d.when,title:d.title,type:d.type,consequence:d.consequence})),
+  order:state.order?{situation:state.order.situation,decision:state.order.decision,authority:state.order.authority,risk:state.order.risk,control:state.order.control,owner:state.order.owner,trigger:state.order.trigger,total:state.order.total}:null,
+  boardResponses:state.boardResponses.map(r=>({stakeholder:r.stakeholder,score:r.score})),
+  verdict:state.verdict
+ };
+}
+async function sendCos(){
+ const q=$('#cos-input').value.trim();if(!q)return;
+ $('#cos-log').innerHTML+=`<div class="cos-msg you">${q.replace(/[<>]/g,'')}</div>`;
+ $('#cos-input').value='';$('#cos-send').disabled=true;
+ $('#cos-log').innerHTML+='<div class="cos-msg ai" id="cos-thinking">Analysing the institution...</div>';
+ $('#cos-log').scrollTop=$('#cos-log').scrollHeight;
+ try{
+  const res=await fetch('/api/cos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q,context:cosContext()})});
+  const el=$('#cos-thinking');
+  if(res.ok){const data=await res.json();if(el)el.textContent=data.reply;el.removeAttribute('id')}
+  else{if(el){el.textContent='Chief of Staff unavailable. Check ANTHROPIC_API_KEY in Vercel.';el.removeAttribute('id')}}
+ }catch(e){const el=$('#cos-thinking');if(el){el.textContent='Connection failed.';el.removeAttribute('id')}}
+ $('#cos-send').disabled=false;$('#cos-log').scrollTop=$('#cos-log').scrollHeight;
+}
 $('#cos-send').onclick=sendCos;$('#cos-input').addEventListener('keydown',e=>{if(e.key==='Enter')sendCos()});
 
 // persistence-safe summary update
