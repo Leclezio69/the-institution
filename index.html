@@ -698,7 +698,8 @@ async function commitDecision(index,choice){
  if(state.decisions.length>=5)setTimeout(showTimeComplete,800);
 }
 function showTimeComplete(){
- $('#consequence').innerHTML='<div style="text-align:center;padding:8px 0"><b style="color:var(--gold2);font:500 10px IBM Plex Mono,monospace;letter-spacing:.14em">ALL 5 DECISIONS COMMITTED</b><p style="color:var(--muted);font-size:12px;margin:8px 0">Your decision record is sealed. The institution now carries these choices forward into every future act.</p><button class="btn primary" style="margin-top:10px" onclick="jump(\'authority\')">Proceed to Authority Chamber →</button></div>';
+ $('#consequence').innerHTML='<div style="text-align:center;padding:8px 0"><b style="color:var(--gold2);font:500 10px IBM Plex Mono,monospace;letter-spacing:.14em">ALL 5 DECISIONS COMMITTED</b><p style="color:var(--muted);font-size:12px;margin:8px 0">Your decision record is sealed. The institution now carries these choices forward into every future act.</p><button class="btn primary" style="margin-top:10px" id="go-authority">Proceed to Authority Chamber →</button></div>';
+ $('#go-authority').onclick=function(){jump('authority')};
 }
 function renderLedger(){
  $('#ledger').innerHTML=state.decisions.map(d=>`<div class="ledger-item"><span class="when">${d.when}</span><b>${d.title}</b><p>${d.consequence}</p><span class="when">SEAL ${short(d.hash)}</span></div>`).join('');
