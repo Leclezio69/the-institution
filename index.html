@@ -115,8 +115,28 @@ h1,h2,h3{font-weight:400;line-height:1.03;letter-spacing:-.035em}h1{font-size:cl
 #boot{position:fixed;inset:0;z-index:200;background:#050811;display:flex;align-items:center;justify-content:center;transition:.8s opacity}.boot-inner{text-align:center}.boot-mark{font:400 11px 'IBM Plex Mono',monospace;letter-spacing:.38em;color:#d8b65e}.boot-title{font-size:clamp(40px,8vw,94px);letter-spacing:-.05em;margin-top:17px}.boot-line{width:240px;height:1px;background:rgba(216,182,94,.2);margin:28px auto 0;overflow:hidden}.boot-line span{display:block;height:100%;width:0;background:#d8b65e;animation:boot 1.35s ease forwards}@keyframes boot{to{width:100%}}#boot.out{opacity:0;pointer-events:none}
 
 @media(max-width:1050px){.arrival-grid,.assembly-shell,.dna-layout,.crisis-shell,.authority-grid,.autopsy-grid,.record-grid{grid-template-columns:1fr}.future-grid{grid-template-columns:1fr}.board-room{grid-template-columns:1fr}.board-list{display:grid;grid-template-columns:repeat(3,1fr)}.board-member{border-right:1px solid var(--line2)}.organism{min-height:650px}}
-@media(max-width:760px){:root{--rail:0px;--top:52px}#rail{display:none}.brand{display:none}.top-action{padding:0 11px}.stage-nav a{padding:0 12px}.act{padding:105px 6vw 80px}.form-grid,.order-grid{grid-template-columns:1fr}.span2{grid-column:auto}.intake-footer,.seal-record,.board-actions{align-items:stretch;flex-direction:column}.organism{min-height:790px}.system-node{width:135px}.core{width:145px;height:145px}.n1{left:4%;top:5%}.n2{right:4%;left:auto;top:5%}.n3{left:4%;right:auto;top:24%}.n4{right:4%;left:auto;top:24%}.n5{left:4%;right:auto;top:54%}.n6{right:4%;left:auto;bottom:auto;top:54%}.n7{left:4%;bottom:5%}.n8{right:4%;bottom:5%}.signals{grid-template-columns:1fr}.board-list{grid-template-columns:1fr 1fr}.strand{grid-template-columns:1fr 40px}.strand-track{grid-column:1/-1}.future{min-height:auto}.finding{grid-template-columns:1fr}.export-actions{grid-template-columns:1fr}#cos-toggle{right:12px;bottom:12px}}
-@media print{#topbar,#rail,#progress,#cos-toggle,#cos,#toast,.btn,.chips,.timeline-tabs,.board-list{display:none!important}main{margin:0}.act{display:none!important}#record{display:flex!important;min-height:auto;padding:20px}.record-grid{display:block}.record-side{margin-top:20px}.card{box-shadow:none}.charter{border-color:#999;color:#111;background:#fff}.charter *{color:#111!important}}
+@media(max-width:760px){:root{--rail:0px;--top:52px}#rail{display:none}.brand{display:none}.top-action{padding:0 11px;font-size:8px}.stage-nav a{padding:0 12px}.act{padding:105px 6vw 80px}#guide-bar{gap:16px;padding:7px 4vw;font-size:8.5px}.form-grid,.order-grid{grid-template-columns:1fr}.span2{grid-column:auto}.intake-footer,.seal-record,.board-actions{align-items:stretch;flex-direction:column}.organism{min-height:790px}.system-node{width:135px}.core{width:145px;height:145px}.n1{left:4%;top:5%}.n2{right:4%;left:auto;top:5%}.n3{left:4%;right:auto;top:24%}.n4{right:4%;left:auto;top:24%}.n5{left:4%;right:auto;top:54%}.n6{right:4%;left:auto;bottom:auto;top:54%}.n7{left:4%;bottom:5%}.n8{right:4%;bottom:5%}.signals{grid-template-columns:1fr}.board-list{grid-template-columns:1fr 1fr}.strand{grid-template-columns:1fr 40px}.strand-track{grid-column:1/-1}.future{min-height:auto}.finding{grid-template-columns:1fr}.export-actions{grid-template-columns:1fr}#cos-toggle{right:12px;bottom:12px}}
+@media print{#topbar,#rail,#progress,#cos-toggle,#cos,#toast,.btn,.chips,.timeline-tabs,.board-list,#guide-bar,#transcript-bar{display:none!important}main{margin:0}.act{display:none!important}#record{display:flex!important;min-height:auto;padding:20px}.record-grid{display:block}.record-side{margin-top:20px}.card{box-shadow:none}.charter{border-color:#999;color:#111;background:#fff}.charter *{color:#111!important}}
+
+/* instruction guide banner */
+#guide-bar{position:fixed;top:calc(var(--top) + 2px);left:var(--rail);right:0;z-index:75;padding:9px 6vw;display:flex;gap:28px;align-items:center;background:var(--glass);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);font:400 9.5px 'IBM Plex Mono',monospace;letter-spacing:.07em;color:var(--muted);opacity:0;transform:translateY(-6px);transition:.4s;pointer-events:none;overflow-x:auto;scrollbar-width:none}
+#guide-bar::-webkit-scrollbar{display:none}
+#guide-bar.visible{opacity:1;transform:none;pointer-events:auto}
+.guide-seg{display:flex;gap:5px;align-items:center;white-space:nowrap}.guide-seg .gl{color:var(--gold);font-weight:500;text-transform:uppercase;letter-spacing:.13em}.guide-seg.gn .gl{color:var(--green)}
+
+/* auto-narrate toggle */
+.top-action.auto-on{color:var(--gold2);background:rgba(216,182,94,.12);border-bottom:2px solid var(--gold)}
+
+/* transcript bar */
+#transcript-bar{position:fixed;bottom:0;left:var(--rail);right:0;height:34px;z-index:95;display:flex;align-items:center;background:var(--glass);backdrop-filter:blur(14px);border-top:1px solid var(--line2);opacity:0;transition:.4s;pointer-events:none}
+#transcript-bar.active{opacity:1;pointer-events:auto}
+.tr-track{position:relative;width:100%;height:100%;display:flex;align-items:center;overflow:hidden}
+.tr-line-l,.tr-line-r{position:absolute;top:50%;height:1px;background:var(--line)}
+.tr-line-l{left:0;right:calc(50% + 4em)}.tr-line-r{left:calc(50% + 4em);right:0}
+.tr-words{position:absolute;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;font:400 11px 'IBM Plex Mono',monospace;color:var(--dim);transition:none;white-space:nowrap}
+.tr-words .tw{transition:color .12s,transform .12s,opacity .12s;opacity:.35}
+.tr-words .tw.near{opacity:.55}
+.tr-words .tw.current{color:var(--gold2);opacity:1;font-weight:500;transform:scale(1.18)}
 </style>
 </head>
 <body>
@@ -133,10 +153,12 @@ h1,h2,h3{font-weight:400;line-height:1.03;letter-spacing:-.035em}h1{font-size:cl
     <a href="#arrival"><b>00</b> Arrival</a><a href="#assembly"><b>01</b> Assembly</a><a href="#dna"><b>02</b> DNA</a><a href="#time"><b>03</b> Time</a><a href="#authority"><b>04</b> Authority</a><a href="#futures"><b>05</b> Futures</a><a href="#board"><b>06</b> Board</a><a href="#autopsy"><b>07</b> Autopsy</a><a href="#record"><b>08</b> Record</a>
   </nav>
   <button class="top-action" id="narrate-btn">Narrate</button>
+  <button class="top-action" id="auto-narrate-btn">Auto</button>
   <button class="top-action" id="theme-btn">Light</button>
   <button class="top-action" id="reset-btn">Reset</button>
 </header>
 <div id="progress"><span></span></div>
+<div id="guide-bar"></div>
 
 <main>
 <section class="act" id="arrival" data-act="ARRIVAL">
@@ -303,6 +325,7 @@ h1,h2,h3{font-weight:400;line-height:1.03;letter-spacing:-.035em}h1{font-size:cl
 <button id="cos-toggle">Chief of Staff · Online</button>
 <aside id="cos"><div class="cos-head"><b>AI CHIEF OF STAFF</b><button id="cos-close">×</button></div><div class="cos-log" id="cos-log"><div class="cos-msg ai">I am watching the institution you are building. Ask me where authority is unclear, evidence is weak, or the operating model depends too heavily on you.</div></div><div class="cos-input"><input id="cos-input" placeholder="Interrogate the institution…"><button id="cos-send">Send</button></div></aside>
 <div id="toast"></div>
+<div id="transcript-bar"><div class="tr-track"><div class="tr-line-l"></div><div class="tr-words" id="tr-words"></div><div class="tr-line-r"></div></div></div>
 
 <script>
 (()=>{
@@ -549,6 +572,127 @@ $('#cos-send').onclick=sendCos;$('#cos-input').addEventListener('keydown',e=>{if
 // persistence-safe summary update
 function updateWallet(){ $('#w-systems').textContent=state.assembled?'8 / 8':'0 / 8';$('#w-decisions').textContent=state.decisions.length+' / 5';$('#w-order').textContent=state.order?'SEALED':'OPEN';$('#w-board').textContent=state.boardResponses.length;$('#w-verdict').textContent=state.verdict?state.verdict.code:'PENDING' }
 setInterval(updateWallet,800);
+
+// ── instruction guide banner ──
+const GUIDE={
+  arrival:{what:'Define your role, institution, mandate, and risk exposures.',when:'This is where every session begins.',how:'Fill in each field, select your exposures, then click "Assemble institution".',next:'Assembly — your eight systems come online.'},
+  assembly:{what:'Inspect the eight operating systems and seal the organism.',when:'After submitting your mandate.',how:'Click each system node to inspect it. Click "Seal operating organism" when ready.',next:'DNA — the constitutional strands beneath the architecture.'},
+  dna:{what:'Review the five DNA strands and detected mutations.',when:'After the operating organism is sealed.',how:'Study each strand score and mutation. Click "Ratify institutional DNA" to proceed.',next:'Time Compression — five crises from Day 1 to Year 5.'},
+  time:{what:'Face five time-compressed crises and commit binding decisions.',when:'After ratifying the DNA.',how:'Read each crisis, choose A, B, or C. Each choice permanently alters your scores.',next:'Authority Chamber — write the order the institution must obey.'},
+  authority:{what:'Write a complete authority order with every operational field.',when:'After completing the five time decisions.',how:'Fill situation, decision, authority, risk, control, owner, and reversal trigger. Commit the command.',next:'Futures — three possible institutional futures.'},
+  futures:{what:'Review three futures generated from your decisions and command quality.',when:'After committing the authority order.',how:'Read each scenario and its probability. Scroll down to continue.',next:'Board — six stakeholders will challenge you.'},
+  board:{what:'Answer each board member\'s challenge from the operating record.',when:'After reviewing the futures.',how:'Select a board member, read their question, write your response, and seal it.',next:'Autopsy — discover what your decisions actually built.'},
+  autopsy:{what:'Run the institutional autopsy to reveal your institution\'s true character.',when:'After facing the board.',how:'Click "Run institutional autopsy" to generate the durability verdict.',next:'Record — your board-grade charter and evidence wallet.'},
+  record:{what:'Download the complete institutional record.',when:'After the autopsy is complete.',how:'Download the JSON, print the charter, or copy the board brief.',next:'Session complete. The institution is yours.'}
+};
+let currentActId='arrival';
+function updateGuide(id){
+  currentActId=id;const g=GUIDE[id];if(!g){$('#guide-bar').classList.remove('visible');return}
+  $('#guide-bar').innerHTML=
+    `<span class="guide-seg"><span class="gl">Do</span> ${g.what}</span>`+
+    `<span class="guide-seg"><span class="gl">When</span> ${g.when}</span>`+
+    `<span class="guide-seg"><span class="gl">How</span> ${g.how}</span>`+
+    `<span class="guide-seg gn"><span class="gl">Next</span> ${g.next}</span>`;
+  $('#guide-bar').classList.add('visible');
+}
+// hook into the existing act observer
+const guideObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)updateGuide(e.target.id)}),{threshold:.34});
+acts.forEach(a=>guideObs.observe(a));
+updateGuide('arrival');
+
+// ── transcript bar ──
+const trBar=$('#transcript-bar'),trWords=$('#tr-words');
+let trActive=false,trWordEls=[],trCurrentIdx=-1,trAnimFrame=0;
+function trShow(words){
+  trBar.classList.add('active');trActive=true;
+  trWords.innerHTML=words.map(w=>`<span class="tw">${w}</span>`).join('');
+  trWordEls=$$('.tw',trWords);trCurrentIdx=-1;
+}
+function trHighlight(idx){
+  if(idx<0||idx>=trWordEls.length)return;
+  trWordEls.forEach((el,i)=>{
+    el.classList.remove('current','near');
+    if(i===idx)el.classList.add('current');
+    else if(Math.abs(i-idx)<=3)el.classList.add('near');
+  });
+  trCurrentIdx=idx;
+  // center the current word
+  const el=trWordEls[idx],container=trWords.parentElement;
+  const offset=el.offsetLeft+el.offsetWidth/2-container.offsetWidth/2;
+  trWords.style.transform=`translateX(${-offset}px)`;
+  trWords.style.transition='transform .18s ease';
+}
+function trHide(){trBar.classList.remove('active');trActive=false;trWords.innerHTML='';trCurrentIdx=-1}
+
+// ── narration engine with transcript ──
+let autoNarrate=false,lastNarratedAct='',narrating=false;
+function narrateText(text,cb){
+  if(narrating)return;narrating=true;
+  const words=text.split(/\s+/).filter(w=>w.length>0);
+  trShow(words);
+  // try ElevenLabs first
+  fetch('/api/narrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})})
+  .then(res=>{if(!res.ok)throw new Error();return res.blob()})
+  .then(blob=>{
+    const audio=new Audio(URL.createObjectURL(blob));
+    const duration=words.length*0.28; // estimate ~280ms per word
+    audio.onplay=()=>{
+      let i=0;
+      const step=()=>{
+        if(!trActive||i>=words.length){narrating=false;setTimeout(trHide,800);return}
+        trHighlight(i);i++;
+        const interval=(audio.duration||duration)/words.length*1000;
+        trAnimFrame=setTimeout(step,interval);
+      };step();
+    };
+    audio.onended=()=>{clearTimeout(trAnimFrame);narrating=false;if(cb)cb();setTimeout(trHide,1200)};
+    audio.onerror=()=>{narrating=false;trHide();narrateBrowser(text,words,cb)};
+    audio.play().catch(()=>{narrating=false;trHide()});
+  })
+  .catch(()=>{narrating=false;narrateBrowser(text,words,cb)});
+}
+function narrateBrowser(text,words,cb){
+  if(!('speechSynthesis'in window)){trHide();return}
+  narrating=true;trShow(words);
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.rate=.88;u.pitch=.86;
+  let wordIdx=0;
+  u.onboundary=e=>{
+    if(e.name==='word'){trHighlight(wordIdx);wordIdx++}
+  };
+  u.onend=()=>{narrating=false;if(cb)cb();setTimeout(trHide,1200)};
+  u.onerror=()=>{narrating=false;trHide()};
+  speechSynthesis.speak(u);
+}
+function narrateAct(actId){
+  const section=document.getElementById(actId);if(!section)return;
+  const heading=section.querySelector('h2,h1')?.textContent||'The Institution';
+  const lede=section.querySelector('.lede')?.textContent||'';
+  const g=GUIDE[actId];
+  const full=heading+'. '+lede+(g?' . '+g.what+' '+g.how:'');
+  narrateText(full);
+}
+
+// replace old narrate handler
+$('#narrate-btn').onclick=()=>{narrateAct(currentActId)};
+
+// auto-narrate toggle
+$('#auto-narrate-btn').onclick=()=>{
+  autoNarrate=!autoNarrate;
+  $('#auto-narrate-btn').classList.toggle('auto-on',autoNarrate);
+  toast(autoNarrate?'Auto narration on':'Auto narration off');
+  if(autoNarrate){lastNarratedAct=currentActId;narrateAct(currentActId)}
+  else{speechSynthesis.cancel();clearTimeout(trAnimFrame);narrating=false;trHide()}
+};
+// auto-narrate on act change
+const autoNarObs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting&&autoNarrate&&e.target.id!==lastNarratedAct){
+    lastNarratedAct=e.target.id;
+    speechSynthesis.cancel();clearTimeout(trAnimFrame);narrating=false;
+    setTimeout(()=>narrateAct(e.target.id),400);
+  }
+}),{threshold:.45});
+acts.forEach(a=>autoNarObs.observe(a));
 })();
 </script>
 </body>
