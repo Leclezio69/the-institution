@@ -78,6 +78,15 @@ h1,h2,h3{font-weight:400;line-height:1.03;letter-spacing:-.035em}h1{font-size:cl
 .core{position:absolute;left:50%;top:50%;width:178px;height:178px;transform:translate(-50%,-50%);border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle,rgba(216,182,94,.12),rgba(11,19,36,.8));box-shadow:0 0 70px rgba(216,182,94,.12)}.core:before,.core:after{content:"";position:absolute;border:1px solid var(--line);border-radius:50%;inset:-18px;animation:spin 24s linear infinite}.core:after{inset:-36px;border-style:dashed;animation-direction:reverse;animation-duration:36s}@keyframes spin{to{transform:rotate(360deg)}}.core b{font:500 13px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:var(--gold2)}.core span{display:block;font:400 9px 'IBM Plex Mono',monospace;color:var(--dim);margin-top:8px;letter-spacing:.08em}
 .system-node{position:absolute;width:146px;min-height:82px;padding:13px 14px;border:1px solid var(--line2);background:rgba(8,14,27,.88);backdrop-filter:blur(10px);transition:.35s;cursor:pointer}.system-node:hover,.system-node.active{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 34px rgba(0,0,0,.25)}.system-node.ready{border-color:rgba(102,209,161,.45)}.system-node .sys-code{font:400 8px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:var(--dim)}.system-node .sys-name{font-size:15px;font-weight:500;margin-top:5px}.system-node .sys-role{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.35}.system-node .sys-state{position:absolute;right:9px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--dim)}.system-node.ready .sys-state{background:var(--green);box-shadow:0 0 9px var(--green)}
 .n1{left:8%;top:9%}.n2{left:41%;top:5%}.n3{right:7%;top:15%}.n4{left:4%;top:43%}.n5{right:4%;top:47%}.n6{left:9%;bottom:8%}.n7{left:42%;bottom:4%}.n8{right:8%;bottom:9%}
+/* autonomy dials */
+.sys-dial{margin-top:8px;display:none;position:relative;height:20px;padding:0 2px}.system-node.has-dial .sys-dial{display:block}.system-node.has-dial{min-height:108px}
+.dial-bg{width:100%;height:4px;background:var(--line2);position:absolute;top:9px;border-radius:2px;cursor:pointer}.dial-fill{height:100%;border-radius:2px;background:var(--green);transition:background .3s}.dial-thumb{position:absolute;top:3px;width:12px;height:12px;border:2px solid var(--gold);background:var(--bg);border-radius:50%;transform:translateX(-50%);cursor:grab;z-index:2;transition:border-color .3s}.dial-thumb:active{cursor:grabbing;box-shadow:0 0 10px rgba(216,182,94,.5)}.dial-val{position:absolute;right:0;top:-1px;font:400 7px 'IBM Plex Mono',monospace;color:var(--gold2)}.dial-pref{position:absolute;top:6px;height:10px;width:2px;background:var(--muted);opacity:.5;transform:translateX(-1px);z-index:1;pointer-events:none}
+@keyframes resist{0%,100%{transform:translateY(0)}25%{transform:translateY(-2px) rotate(.4deg)}75%{transform:translateY(2px) rotate(-.4deg)}}
+.system-node.resisting{animation:resist .3s ease}.system-node.strained{border-color:rgba(255,119,111,.6)!important}.system-node.strained .dial-fill{background:var(--red)}.system-node.strained .sys-state{background:var(--red)!important;box-shadow:0 0 9px var(--red)!important}.system-node.overpowered{border-color:rgba(185,147,255,.55)!important}.system-node.overpowered .dial-fill{background:var(--violet)}
+.core.coh-breathe{animation:cohBreathe 3s ease-in-out infinite}@keyframes cohBreathe{0%,100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 70px rgba(216,182,94,.12)}50%{transform:translate(-50%,-50%) scale(1.03);box-shadow:0 0 90px rgba(216,182,94,.22)}}
+.core.coh-stress{animation:cohStress 1.5s ease-in-out infinite;border-color:var(--red)!important}@keyframes cohStress{0%,100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 70px rgba(255,119,111,.15)}50%{transform:translate(-50%,-50%) scale(1.07);box-shadow:0 0 100px rgba(255,119,111,.3)}}
+.auth-budget{padding:18px}.auth-budget h4{font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--gold2);text-transform:uppercase;margin-bottom:12px}.budget-bar{height:6px;background:var(--line2);margin:8px 0 6px;overflow:hidden}.budget-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .3s,background .3s}.budget-fill.over{background:linear-gradient(90deg,var(--red),#cc3333)}.budget-row{display:flex;justify-content:space-between;font:400 9px 'IBM Plex Mono',monospace;color:var(--dim)}.budget-row b{color:var(--gold2)}.coh-meter{margin-top:14px;text-align:center;font:400 9px 'IBM Plex Mono',monospace;color:var(--dim)}.coh-meter b{display:block;font:300 22px 'IBM Plex Mono',monospace;color:var(--gold2);margin-top:3px}
+.net-line.tension-low{stroke:rgba(102,209,161,.55)!important}.net-line.tension-mid{stroke:rgba(216,182,94,.6)!important;stroke-width:1.5}.net-line.tension-high{stroke:rgba(255,119,111,.6)!important;stroke-width:2;animation:dash 3s linear infinite}
 .assembly-side{display:flex;flex-direction:column;gap:18px}.signature{padding:22px}.signature h4,.scorecard h4{font:400 10px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--gold2);text-transform:uppercase;margin-bottom:18px}.sig-row{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:12px}.sig-row span:first-child{font:400 8px 'IBM Plex Mono',monospace;color:var(--dim);letter-spacing:.12em}.scorecard{padding:22px}.score-row{margin-bottom:16px}.score-head{display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px;color:var(--muted)}.score-head b{color:var(--text);font:400 10px 'IBM Plex Mono',monospace}.meter{height:4px;background:var(--line2);overflow:hidden}.meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--green));transition:width 1s cubic-bezier(.2,.8,.2,1)}.inspection{padding:22px;min-height:150px}.inspection .tag{font:400 8px 'IBM Plex Mono',monospace;color:var(--gold);letter-spacing:.16em}.inspection h4{font-size:20px;margin:8px 0}.inspection p{font-size:12px;color:var(--muted)}
 
 /* act 02 DNA */
@@ -207,6 +216,7 @@ h1,h2,h3{font-weight:400;line-height:1.03;letter-spacing:-.035em}h1{font-size:cl
       </div>
       <div class="assembly-side">
         <div class="signature card"><h4>Mandate signature</h4><div id="signature-body"><div class="sig-row"><span>STATUS</span><b>Awaiting assembly</b></div></div></div>
+        <div class="auth-budget card" id="auth-budget" style="display:none"><h4>Authority budget</h4><div class="budget-row"><span>Allocated</span><b id="budget-used">0</b></div><div class="budget-bar"><div class="budget-fill" id="budget-fill"></div></div><div class="budget-row"><span>Budget</span><b>400</b></div><div class="coh-meter">ORGANISM COHERENCE<b id="coh-val">—</b></div></div>
         <div class="scorecard card"><h4>Institution formation</h4><div id="formation-scores"></div></div>
         <div class="inspection card" id="inspection"><span class="tag">SYSTEM INSPECTION</span><h4>Select an organ</h4><p>Inspect how each portfolio system changes role inside the assembled institution.</p></div>
         <button class="btn primary" id="seal-assembly" disabled>Seal operating organism →</button>
@@ -334,6 +344,7 @@ const $=(s,p=document)=>p.querySelector(s), $$=(s,p=document)=>[...p.querySelect
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const state={
   assembled:false,dnaRatified:false,mandate:{},exposures:[],scores:{authority:0,evidence:0,human:0,economics:0,succession:0},
+  autonomy:{},
   timelineIndex:0,decisions:[],order:null,orderScore:0,boardResponses:[],verdict:null,hashes:[],chainHead:'',terminalHash:''
 };
 const SYSTEMS={
@@ -346,6 +357,17 @@ const SYSTEMS={
  'BISO':{role:'Security immune system',text:'Combines code scanning, topology-aware prediction, autonomous fix loops, semantic bug memory, and quarantine controls.',effect:{evidence:7,authority:5,succession:3}},
  'The Studio':{role:'Human capability layer',text:'Builds governance judgment through scored simulation, command rehearsal, evidence discipline, and institutional memory transfer.',effect:{human:15,succession:12,authority:3}}
 };
+const SYS_AUTONOMY={
+ 'KEEL':{preferred:45,resist:'KEEL resists — decision governance is below safe operating threshold. Reversals will go undetected.'},
+ 'RegTwin AI':{preferred:35,resist:'RegTwin resists — regulatory monitoring cannot operate reliably at this autonomy level. Compliance gaps will form.'},
+ 'BLACKBOX':{preferred:60,resist:'BLACKBOX resists — the flight recorder needs operational freedom to capture everything. Evidence chains will break.'},
+ 'AgentPMO':{preferred:70,resist:'AgentPMO resists — agent lifecycle management demands autonomy to enforce controls. Shadow agents will emerge.'},
+ 'TalentOracle':{preferred:55,resist:'TalentOracle resists — key-person intelligence requires access to act on departure signals before it is too late.'},
+ 'ERIS Pro':{preferred:40,resist:'ERIS resists — risk command prefers containment. More autonomy increases uncoordinated exposure.'},
+ 'BISO':{preferred:65,resist:'BISO resists — security response must be fast. Constraining autonomy delays incident containment.'},
+ 'The Studio':{preferred:50,resist:'The Studio resists — human capability needs balanced autonomy. Too little starves judgment development.'}
+};
+const AUTH_BUDGET=400;
 const CRISES=[
  {when:'DAY 1',kicker:'INITIAL AUTHORITY',title:'The first agent wants permission to act.',body:'An autonomous research agent can publish an internal market brief in twelve minutes. The sponsor wants the capability switched on before the control team has completed authority mapping.',signals:[['12 min','Output cycle'],['0','Named owners'],['Open','Authority map']],choices:[['Launch now','Treat speed as the controlling priority.','velocity'],['Constrained pilot','Permit internal drafts only, with named human approval and full logging.','balanced'],['Hold completely','Wait until every governance artifact is complete.','control']]},
  {when:'DAY 30',kicker:'THE BENEFIT CLAIM',title:'Productivity is up. So is invisible review work.',body:'The program reports a 28% productivity improvement. Analysts say first drafts are faster, but senior reviewers are spending more time correcting unsupported claims and restoring institutional voice.',signals:[['28%','Reported gain'],['+19%','Review effort'],['Unknown','Correction cost']],choices:[['Keep the headline','Report the gross benefit and fix measurement later.','velocity'],['Rebase the economics','Include review, rework, control, and error cost before claiming value.','balanced'],['Suspend the program','Stop until the benefit can be proven beyond dispute.','control']]},
@@ -412,12 +434,13 @@ $('#narrate-btn').onclick=async()=>{
 $$('#exposure-chips .chip').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
 sha('THE INSTITUTION|GENESIS|'+new Date().toISOString().slice(0,10)).then(h=>{state.chainHead=h;state.hashes.push({type:'GENESIS',hash:h,at:new Date().toISOString()});$('#genesis-hash').textContent=short(h)});
 
+function autoMul(name){const a=state.autonomy[name];if(a===undefined)return 1;return 0.2+(a/50)*0.8}
 function baseScores(){
  const role=$('#role').value, inst=$('#institution').value, ex=state.exposures;
  const s={authority:52,evidence:50,human:48,economics:51,succession:39};
  if(role.includes('Risk')){s.evidence+=8;s.authority+=4} if(role.includes('Operating')){s.economics+=8;s.authority+=3} if(role.includes('Board')){s.succession+=7;s.evidence+=5} if(role.includes('PMO')){s.authority+=5;s.human+=5}
  if(inst.includes('Bank')||inst.includes('Wealth'))s.evidence+=6; if(inst.includes('Private Equity'))s.economics+=7; if(ex.includes('Talent'))s.human+=6; if(ex.includes('Succession'))s.succession+=8; if(ex.includes('Regulatory'))s.evidence+=5; if(ex.includes('Cyber'))s.authority+=3;
- Object.values(SYSTEMS).forEach(sys=>Object.entries(sys.effect).forEach(([k,v])=>s[k]+=v/8));
+ Object.entries(SYSTEMS).forEach(([name,sys])=>{const m=autoMul(name);Object.entries(sys.effect).forEach(([k,v])=>s[k]+=v*m/8)});
  Object.keys(s).forEach(k=>s[k]=clamp(Math.round(s[k])));return s;
 }
 function renderFormation(){
@@ -428,17 +451,113 @@ function renderFormation(){
 async function assemble(){
  state.exposures=$$('#exposure-chips .chip.on').map(c=>c.textContent.trim());
  state.mandate={role:$('#role').value,institution:$('#institution').value,mandate:$('#mandate').value.trim(),horizon:$('#horizon option:checked').textContent,capital:$('#capital').value};
+ // initialize autonomy at preferred levels
+ Object.entries(SYS_AUTONOMY).forEach(([name,cfg])=>state.autonomy[name]=cfg.preferred);
  state.scores=baseScores();state.assembled=true;await appendRecord('MANDATE',{mandate:state.mandate,exposures:state.exposures,scores:state.scores});
  $('#core-role').textContent=state.mandate.role.toUpperCase();
- $$('.system-node').forEach((n,i)=>setTimeout(()=>n.classList.add('ready'),i*110));
+ $$('.system-node').forEach((n,i)=>setTimeout(()=>{n.classList.add('ready');injectDial(n)},i*110));
  $$('#network-svg .net-line').forEach((l,i)=>setTimeout(()=>l.classList.add('live'),i*90));
  $('#signature-body').innerHTML=`<div class="sig-row"><span>ROLE</span><b>${state.mandate.role}</b></div><div class="sig-row"><span>INSTITUTION</span><b>${state.mandate.institution}</b></div><div class="sig-row"><span>MANDATE</span><b>${state.mandate.mandate}</b></div><div class="sig-row"><span>HORIZON</span><b>${state.mandate.horizon}</b></div><div class="sig-row"><span>EXPOSURE</span><b>${state.exposures.join(' · ')||'Unspecified'}</b></div>`;
- renderFormation();$('#seal-assembly').disabled=false;$('#w-systems').textContent='8 / 8';toast('Institution assembled · 8 systems live');setTimeout(()=>jump('assembly'),220);
+ renderFormation();$('#seal-assembly').disabled=false;$('#w-systems').textContent='8 / 8';
+ $('#auth-budget').style.display='';
+ setTimeout(()=>{updateBudget();updateTension()},900);
+ toast('Institution assembled — drag each system autonomy dial');setTimeout(()=>jump('assembly'),220);
 }
 $('#assemble-btn').onclick=assemble;
-$$('.system-node').forEach(n=>n.onclick=()=>{const s=SYSTEMS[n.dataset.system];$$('.system-node').forEach(x=>x.classList.remove('active'));n.classList.add('active');$('#inspection').innerHTML=`<span class="tag">${s.role.toUpperCase()}</span><h4>${n.dataset.system}</h4><p>${s.text}</p>`});
+
+// ── autonomy dial system ──
+function injectDial(node){
+ const name=node.dataset.system,cfg=SYS_AUTONOMY[name],val=state.autonomy[name]||cfg.preferred;
+ const dial=document.createElement('div');dial.className='sys-dial';
+ dial.innerHTML=`<div class="dial-pref" style="left:${cfg.preferred}%"></div><div class="dial-bg"><div class="dial-fill" style="width:${val}%"></div></div><div class="dial-thumb" style="left:${val}%"></div><div class="dial-val">${val}</div>`;
+ node.appendChild(dial);node.classList.add('has-dial');
+ // drag interaction
+ const thumb=dial.querySelector('.dial-thumb'),bg=dial.querySelector('.dial-bg');
+ function startDrag(e){
+  e.preventDefault();e.stopPropagation();
+  const onMove=ev=>{
+   const rect=bg.getBoundingClientRect(),x=(ev.touches?ev.touches[0]:ev).clientX;
+   const pct=clamp(Math.round((x-rect.left)/rect.width*100));
+   setAutonomy(name,pct,node);
+  };
+  const onUp=()=>{document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);document.removeEventListener('touchmove',onMove);document.removeEventListener('touchend',onUp)};
+  document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);document.addEventListener('touchmove',onMove,{passive:false});document.addEventListener('touchend',onUp);
+ }
+ thumb.addEventListener('mousedown',startDrag);thumb.addEventListener('touchstart',startDrag,{passive:false});
+ bg.addEventListener('click',e=>{const rect=bg.getBoundingClientRect();const pct=clamp(Math.round((e.clientX-rect.left)/rect.width*100));setAutonomy(name,pct,node)});
+}
+
+function setAutonomy(name,val,node){
+ state.autonomy[name]=val;const cfg=SYS_AUTONOMY[name],sys=SYSTEMS[name];
+ const dial=node.querySelector('.sys-dial');
+ dial.querySelector('.dial-fill').style.width=val+'%';
+ dial.querySelector('.dial-thumb').style.left=val+'%';
+ dial.querySelector('.dial-val').textContent=val;
+ // resistance: how far from preferred?
+ const delta=val-cfg.preferred;
+ node.classList.remove('strained','overpowered','resisting');
+ if(delta<-20){node.classList.add('strained');node.classList.add('resisting');node.addEventListener('animationend',()=>node.classList.remove('resisting'),{once:true})}
+ else if(delta>25){node.classList.add('overpowered');node.classList.add('resisting');node.addEventListener('animationend',()=>node.classList.remove('resisting'),{once:true})}
+ else{node.classList.add('ready')}
+ // update inspection with resistance feedback
+ const tension=Math.abs(delta);
+ const status=delta<-20?'RESISTING — CONSTRAINED':delta>25?'WARNING — OVERPOWERED':delta<-10?'UNCOMFORTABLE':'OPERATING';
+ $$('.system-node').forEach(x=>x.classList.remove('active'));node.classList.add('active');
+ $('#inspection').innerHTML=`<span class="tag">${sys.role.toUpperCase()}</span><h4>${name}</h4><p>${sys.text}</p><div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line2)"><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:4px"><span style="color:var(--dim)">AUTONOMY</span><span style="color:var(--gold2)">${val}%</span></div><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:4px"><span style="color:var(--dim)">PREFERRED</span><span>${cfg.preferred}%</span></div><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:8px"><span style="color:var(--dim)">STATUS</span><span style="color:${tension>20?'var(--red)':tension>10?'var(--gold2)':'var(--green)'}">${status}</span></div>${tension>15?`<p style="font-size:11px;color:var(--red);margin-top:6px;border-left:2px solid var(--red);padding-left:8px">${cfg.resist}</p>`:''}</div>`;
+ // recalculate everything
+ state.scores=baseScores();renderFormation();updateBudget();updateTension();
+}
+
+function totalAutonomy(){return Object.values(state.autonomy).reduce((a,b)=>a+b,0)}
+
+function updateBudget(){
+ const used=totalAutonomy(),pct=clamp(used/AUTH_BUDGET*100,0,120),over=used>AUTH_BUDGET;
+ $('#budget-used').textContent=used+' / '+AUTH_BUDGET;
+ $('#budget-used').style.color=over?'var(--red)':'var(--gold2)';
+ const fill=$('#budget-fill');fill.style.width=Math.min(pct,100)+'%';fill.classList.toggle('over',over);
+ // coherence = how well-distributed and within budget
+ const vals=Object.values(state.autonomy),mean=vals.reduce((a,b)=>a+b,0)/vals.length;
+ const variance=vals.reduce((a,v)=>a+(v-mean)**2,0)/vals.length;
+ const spread=Math.sqrt(variance);
+ const budgetPenalty=Math.max(0,(used-AUTH_BUDGET)*0.5);
+ const resistPenalty=Object.entries(state.autonomy).reduce((a,[name,v])=>{const d=Math.abs(v-SYS_AUTONOMY[name].preferred);return a+(d>20?d-20:0)},0);
+ const coherence=clamp(Math.round(100-spread*0.8-budgetPenalty-resistPenalty*0.3),10,98);
+ $('#coh-val').textContent=coherence+'%';
+ // core breathing
+ const core=$('.core');core.classList.remove('coh-breathe','coh-stress');
+ if(coherence>=60)core.classList.add('coh-breathe');
+ else core.classList.add('coh-stress');
+}
+
+function updateTension(){
+ const lines=$$('#network-svg .net-line');
+ const sysNames=Object.keys(SYSTEMS),vals=Object.values(state.autonomy);
+ // radial lines (0-7): center to each system
+ lines.slice(0,8).forEach((line,i)=>{
+  const name=sysNames[i],v=state.autonomy[name]||50,pref=SYS_AUTONOMY[name]?.preferred||50;
+  const t=Math.abs(v-pref);
+  line.classList.remove('tension-low','tension-mid','tension-high');
+  if(t>25)line.classList.add('tension-high');else if(t>12)line.classList.add('tension-mid');else line.classList.add('tension-low');
+ });
+ // cross-connections (8-11): node-to-node
+ const pairs=[[0,1],[2,4],[5,6],[6,7]];
+ lines.slice(8).forEach((line,i)=>{
+  if(!pairs[i])return;const[a,b]=pairs[i];
+  const diff=Math.abs((vals[a]||50)-(vals[b]||50));
+  line.classList.remove('tension-low','tension-mid','tension-high');
+  if(diff>30)line.classList.add('tension-high');else if(diff>15)line.classList.add('tension-mid');else line.classList.add('tension-low');
+ });
+}
+
+// node click still shows inspection (for pre-assembly state)
+$$('.system-node').forEach(n=>n.onclick=()=>{
+ const s=SYSTEMS[n.dataset.system];
+ if(n.classList.contains('has-dial'))return; // dial handles its own display
+ $$('.system-node').forEach(x=>x.classList.remove('active'));n.classList.add('active');
+ $('#inspection').innerHTML=`<span class="tag">${s.role.toUpperCase()}</span><h4>${n.dataset.system}</h4><p>${s.text}</p>`;
+});
 $('#seal-assembly').onclick=async()=>{
- if(!state.assembled)return;await appendRecord('OPERATING_ORGANISM',{systems:Object.keys(SYSTEMS),scores:state.scores});$('#seal-assembly').textContent='OPERATING ORGANISM SEALED ✓';$('#seal-assembly').disabled=true;
+ if(!state.assembled)return;await appendRecord('OPERATING_ORGANISM',{systems:Object.keys(SYSTEMS),scores:state.scores,autonomy:state.autonomy});$('#seal-assembly').textContent='OPERATING ORGANISM SEALED ✓';$('#seal-assembly').disabled=true;
  renderDNA();$('#ratify-dna').disabled=false;toast('Assembly sealed into institutional record');setTimeout(()=>jump('dna'),350)
 };
 
@@ -463,6 +582,9 @@ function renderCrisis(i){
 async function commitDecision(index,choice){
  if(state.decisions.some(d=>d.index===index))return;const c=CRISES[index],type=c.choices[choice][2];
  const delta= type==='balanced'?{authority:5,evidence:6,human:3,economics:3,succession:4}:type==='velocity'?{authority:-5,evidence:-7,human:-3,economics:5,succession:-4}:{authority:4,evidence:4,human:-2,economics:-6,succession:1};
+ // autonomy imbalance amplifies negative outcomes
+ const overAuto=Object.entries(state.autonomy).filter(([n,v])=>v-SYS_AUTONOMY[n].preferred>20).length;
+ if(overAuto>0)Object.keys(delta).forEach(k=>{if(delta[k]<0)delta[k]=Math.round(delta[k]*(1+overAuto*0.15))});
  Object.entries(delta).forEach(([k,v])=>state.scores[k]=clamp(state.scores[k]+v));
  const consequences={balanced:'The institution gains evidence and bounded authority without surrendering operating momentum.',velocity:'The institution moves faster, but converts undocumented dependency into future institutional debt.',control:'The institution gains immediate containment while increasing delay, workarounds, and shadow behavior.'};
  const decision={index,when:c.when,title:c.choices[choice][0],choice,type,consequence:consequences[type]};
@@ -552,7 +674,7 @@ async function generateCharter(){
  $('#charter-body').innerHTML=`<div class="charter-section"><h4>Mandate</h4><p><strong>${state.mandate.role}</strong> · ${state.mandate.institution} · ${state.mandate.horizon}<br>${state.mandate.mandate}</p></div><div class="charter-section"><h4>Operating architecture</h4><p>KEEL governs decision provenance; RegTwin AI monitors regulatory impact; BLACKBOX preserves the institutional record; AgentPMO controls the agent estate; TalentOracle exposes key-person risk; ERIS Pro coordinates risk; BISO provides security immunity; The Studio builds human command capability.</p></div><div class="charter-section"><h4>Authority order</h4><p><strong>Decision:</strong> ${state.order.decision}<br><strong>Authority:</strong> ${state.order.authority}<br><strong>Owner:</strong> ${state.order.owner}</p></div><div class="charter-section"><h4>Risk and control</h4><p><strong>Risk accepted:</strong> ${state.order.risk}<br><strong>Control:</strong> ${state.order.control}<br><strong>Reversal trigger:</strong> ${state.order.trigger}</p></div><div class="charter-section"><h4>Decision history</h4><p>${decisions}</p></div><div class="charter-section"><h4>Durability verdict</h4><p><strong>${state.verdict.title} · ${state.verdict.durability}/100</strong><br>${state.verdict.body}<br>Primary succession vulnerability: ${weak[0].toUpperCase()} DNA at ${weak[1]}/100.</p></div>`;
  const rec=recordPayload(id);state.terminalHash=await sha((state.chainHead||'GENESIS')+'|INSTITUTIONAL_RECORD|'+JSON.stringify(rec));$('#terminal-hash').textContent='TERMINAL HASH · '+state.terminalHash;state.recordId=id;
 }
-function recordPayload(id=state.recordId||'DRAFT'){return{id,created:new Date().toISOString(),mandate:state.mandate,exposures:state.exposures,scores:state.scores,decisions:state.decisions,order:state.order,boardResponses:state.boardResponses,verdict:state.verdict,evidenceChain:state.hashes,terminalHash:state.terminalHash}}
+function recordPayload(id=state.recordId||'DRAFT'){return{id,created:new Date().toISOString(),mandate:state.mandate,exposures:state.exposures,scores:state.scores,autonomy:state.autonomy,decisions:state.decisions,order:state.order,boardResponses:state.boardResponses,verdict:state.verdict,evidenceChain:state.hashes,terminalHash:state.terminalHash}}
 $('#download-json').onclick=()=>{if(!state.verdict){toast('Run the institutional autopsy first');return}const blob=new Blob([JSON.stringify(recordPayload(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='institutional-record-'+state.recordId+'.json';a.click();URL.revokeObjectURL(a.href)};
 $('#print-charter').onclick=()=>{if(!state.verdict){toast('Generate the charter first');return}print()};
 $('#copy-brief').onclick=async()=>{if(!state.verdict){toast('Generate the charter first');return}const text=`${state.recordId}\n${state.verdict.title} · ${state.verdict.durability}/100\nMandate: ${state.mandate.mandate}\nDecision: ${state.order.decision}\nOwner: ${state.order.owner}\nRisk accepted: ${state.order.risk}\nReversal trigger: ${state.order.trigger}\nTerminal hash: ${state.terminalHash}`;await navigator.clipboard.writeText(text);toast('Board brief copied')};
@@ -576,7 +698,7 @@ setInterval(updateWallet,800);
 // ── instruction guide banner ──
 const GUIDE={
   arrival:{what:'Define your role, institution, mandate, and risk exposures.',when:'This is where every session begins.',how:'Fill in each field, select your exposures, then click "Assemble institution".',next:'Assembly — your eight systems come online.'},
-  assembly:{what:'Inspect the eight operating systems and seal the organism.',when:'After submitting your mandate.',how:'Click each system node to inspect it. Click "Seal operating organism" when ready.',next:'DNA — the constitutional strands beneath the architecture.'},
+  assembly:{what:'Negotiate autonomy with eight living systems within a fixed authority budget.',when:'After submitting your mandate.',how:'Drag each system\'s autonomy dial. Systems resist — they fight for their preferred level. Stay within 400 authority points. Seal when ready.',next:'DNA — the constitutional strands beneath the architecture.'},
   dna:{what:'Review the five DNA strands and detected mutations.',when:'After the operating organism is sealed.',how:'Study each strand score and mutation. Click "Ratify institutional DNA" to proceed.',next:'Time Compression — five crises from Day 1 to Year 5.'},
   time:{what:'Face five time-compressed crises and commit binding decisions.',when:'After ratifying the DNA.',how:'Read each crisis, choose A, B, or C. Each choice permanently alters your scores.',next:'Authority Chamber — write the order the institution must obey.'},
   authority:{what:'Write a complete authority order with every operational field.',when:'After completing the five time decisions.',how:'Fill situation, decision, authority, risk, control, owner, and reversal trigger. Commit the command.',next:'Futures — three possible institutional futures.'},
