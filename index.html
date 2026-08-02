@@ -339,12 +339,12 @@ h1,h2,h3{font-weight:400;line-height:1.03;letter-spacing:-.035em}h1{font-size:cl
   <div class="wrap">
     <div class="eyebrow rv">Act VIII · The institutional record</div>
     <h2 class="rv d1">Leave with a charter.<br>Not a score.</h2>
-    <p class="lede rv d2">Your session becomes a board-grade operating record: mandate, architecture, authority, evidence, accepted risk, stop conditions, and succession exposure.</p>
+    <p class="lede rv d2">Your session becomes a board-grade operating record: mandate, architecture, authority, evidence, accepted risk, stop conditions, and succession exposure. Every system in this institution is a live product. Explore the full portfolio at <a href="https://portfolio-briefing-zeta.vercel.app/" target="_blank" style="color:var(--gold2)">The Portfolio Briefing</a>.</p>
     <div class="record-grid rv d3">
       <article class="charter card" id="charter"><div class="charter-head"><div><h3>Institutional Charter</h3><p class="mono" style="font-size:9px;color:var(--dim);margin-top:6px" id="charter-id">RECORD NOT YET SEALED</p></div><span>● TAMPER-EVIDENT</span></div><div id="charter-body"><div class="charter-section"><h4>Status</h4><p>Run the institutional autopsy to generate the final charter.</p></div></div></article>
       <aside class="record-side"><div class="wallet card"><h4>Evidence wallet</h4><div class="wallet-stat"><span>Systems assembled</span><b id="w-systems">0 / 8</b></div><div class="wallet-stat"><span>Decisions committed</span><b id="w-decisions">0 / 5</b></div><div class="wallet-stat"><span>Authority order</span><b id="w-order">OPEN</b></div><div class="wallet-stat"><span>Board responses</span><b id="w-board">0</b></div><div class="wallet-stat"><span>Durability verdict</span><b id="w-verdict">PENDING</b></div><div class="terminal-hash" id="terminal-hash">TERMINAL HASH · PENDING</div></div><div class="export-actions"><button class="btn" id="download-json">Download record</button><button class="btn" id="print-charter">Print charter</button></div><button class="btn primary" id="copy-brief">Copy board brief</button></aside>
     </div>
-    <div class="final-line rv">The institution is not the technology you installed. It is the authority, evidence, incentives, memory, and human judgment that remain after you leave.</div>
+    <div class="final-line rv">The institution is not the technology you installed. It is the authority, evidence, incentives, memory, and human judgment that remain after you leave. <a href="https://portfolio-briefing-zeta.vercel.app/" target="_blank" style="color:var(--gold2);text-decoration:none;font-size:clamp(16px,1.8vw,24px)">Explore the full product portfolio →</a></div>
   </div>
 </section>
 </main>
@@ -994,7 +994,7 @@ const GUIDE={
   futures:{what:'Review three futures generated from your decisions and command quality.',when:'After committing the authority order.',how:'Read each scenario and its probability. Scroll down to continue.',next:'Board — six stakeholders will challenge you.'},
   board:{what:'Answer each board member\'s challenge from the operating record.',when:'After reviewing the futures.',how:'Select a board member, read their question, write your response, and seal it.',next:'Autopsy — discover what your decisions actually built.'},
   autopsy:{what:'Run the institutional autopsy to reveal your institution\'s true character.',when:'After facing the board.',how:'Click "Run institutional autopsy" to generate the durability verdict.',next:'Record — your board-grade charter and evidence wallet.'},
-  record:{what:'Download the complete institutional record.',when:'After the autopsy is complete.',how:'Download the JSON, print the charter, or copy the board brief.',next:'Session complete. The institution is yours.'}
+  record:{what:'Download the complete institutional record.',when:'After the autopsy is complete.',how:'Download the PDF report, print the charter, or copy the board brief. Every system is a live product.',next:'Explore the full product portfolio at The Portfolio Briefing.'}
 };
 let currentActId='arrival';
 function updateGuide(id){
