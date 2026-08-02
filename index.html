@@ -172,6 +172,7 @@ h1,h2,h3{font-weight:400;line-height:1.03;letter-spacing:-.035em}h1{font-size:cl
   <nav class="stage-nav" aria-label="Acts">
     <a href="#arrival"><b>00</b> Arrival</a><a href="#assembly"><b>01</b> Assembly</a><a href="#dna"><b>02</b> DNA</a><a href="#time"><b>03</b> Time</a><a href="#authority"><b>04</b> Authority</a><a href="#futures"><b>05</b> Futures</a><a href="#board"><b>06</b> Board</a><a href="#autopsy"><b>07</b> Autopsy</a><a href="#record"><b>08</b> Record</a>
   </nav>
+  <a class="top-action" href="https://portfolio-briefing-zeta.vercel.app/" target="_blank" style="text-decoration:none;display:flex;align-items:center">Portfolio</a>
   <button class="top-action" id="narrate-btn">Narrate</button>
   <button class="top-action" id="auto-narrate-btn">Auto</button>
   <button class="top-action" id="theme-btn">Light</button>
@@ -364,14 +365,14 @@ const state={
   timelineIndex:0,decisions:[],order:null,orderScore:0,boardResponses:[],verdict:null,hashes:[],chainHead:'',terminalHash:''
 };
 const SYSTEMS={
- 'KEEL':{role:'Decision governance',text:'Intercepts strategic reversals, tests pre-committed exit criteria, and preserves decision provenance in the Conviction Ledger.',effect:{authority:10,evidence:6,economics:3}},
- 'RegTwin AI':{role:'Regulatory intelligence',text:'Monitors regulatory change, maps impact, finds control gaps, predicts audit findings, and prepares board-level remediation evidence.',effect:{evidence:12,authority:4}},
- 'BLACKBOX':{role:'Institutional flight recorder',text:'Creates a tamper-evident, replayable record of every reasoning step, tool call, decision, and output.',effect:{evidence:16,succession:5}},
- 'AgentPMO':{role:'Agent control plane',text:'Registers every agent, classifies risk, tracks cost and performance, records incidents, and enforces lifecycle ownership.',effect:{authority:11,economics:8,evidence:5}},
- 'TalentOracle':{role:'Key-person intelligence',text:'Surfaces departure risk and key-person exposure before critical institutional knowledge walks out of the door.',effect:{human:13,succession:7,economics:4}},
- 'ERIS Pro':{role:'Enterprise risk command',text:'Coordinates predictive risk intelligence and threat response across security, compliance, and operational domains.',effect:{authority:4,evidence:5,human:3}},
- 'BISO':{role:'Security immune system',text:'Combines code scanning, topology-aware prediction, autonomous fix loops, semantic bug memory, and quarantine controls.',effect:{evidence:7,authority:5,succession:3}},
- 'The Studio':{role:'Human capability layer',text:'Builds governance judgment through scored simulation, command rehearsal, evidence discipline, and institutional memory transfer.',effect:{human:15,succession:12,authority:3}}
+ 'KEEL':{role:'Decision governance',text:'Intercepts strategic reversals, tests pre-committed exit criteria, and preserves decision provenance in the Conviction Ledger.',effect:{authority:10,evidence:6,economics:3},url:'https://keel-hq.com'},
+ 'RegTwin AI':{role:'Regulatory intelligence',text:'Monitors regulatory change, maps impact, finds control gaps, predicts audit findings, and prepares board-level remediation evidence.',effect:{evidence:12,authority:4},url:'https://regtwinai.com'},
+ 'BLACKBOX':{role:'Institutional flight recorder',text:'Creates a tamper-evident, replayable record of every reasoning step, tool call, decision, and output.',effect:{evidence:16,succession:5},url:'https://www.promptblackbox.com/landing'},
+ 'AgentPMO':{role:'Agent control plane',text:'Registers every agent, classifies risk, tracks cost and performance, records incidents, and enforces lifecycle ownership.',effect:{authority:11,economics:8,evidence:5},url:'https://www.getagentpmo.com'},
+ 'TalentOracle':{role:'Key-person intelligence',text:'Surfaces departure risk and key-person exposure before critical institutional knowledge walks out of the door.',effect:{human:13,succession:7,economics:4},url:'https://talentoracle.co'},
+ 'ERIS Pro':{role:'Enterprise risk command',text:'Coordinates predictive risk intelligence and threat response across security, compliance, and operational domains.',effect:{authority:4,evidence:5,human:3},url:'https://www.enterpriseriskintelligencesystem.com'},
+ 'BISO':{role:'Security immune system',text:'Combines code scanning, topology-aware prediction, autonomous fix loops, semantic bug memory, and quarantine controls.',effect:{evidence:7,authority:5,succession:3},url:'https://bugimmunesystem.com'},
+ 'The Studio':{role:'Human capability layer',text:'Builds governance judgment through scored simulation, command rehearsal, evidence discipline, and institutional memory transfer.',effect:{human:15,succession:12,authority:3},url:'https://the-studio-tan.vercel.app'}
 };
 const SYS_AUTONOMY={
  'KEEL':{preferred:45,resist:'KEEL resists — decision governance is below safe operating threshold. Reversals will go undetected.'},
@@ -476,7 +477,7 @@ $('#assemble-btn').onclick=assemble;
 function injectTip(node){
  var name=node.dataset.system,sys=SYSTEMS[name];if(!sys)return;
  var tip=document.createElement('div');tip.className='sys-tip';
- tip.innerHTML='<b>'+name.toUpperCase()+'</b>'+sys.text;
+ tip.innerHTML='<b>'+name.toUpperCase()+'</b>'+sys.text+(sys.url?'<a href="'+sys.url+'" target="_blank" style="display:block;margin-top:8px;font:500 9px IBM Plex Mono,monospace;color:var(--gold2);letter-spacing:.1em;text-decoration:none">VIEW PRODUCT →</a>':'');
  // position based on node location in organism
  var cls=node.className;
  var isTop=cls.includes('n1')||cls.includes('n2')||cls.includes('n3');
@@ -526,7 +527,8 @@ function setAutonomy(name,val,node){
  const tension=Math.abs(delta);
  const status=delta<-20?'RESISTING — CONSTRAINED':delta>25?'WARNING — OVERPOWERED':delta<-10?'UNCOMFORTABLE':'OPERATING';
  $$('.system-node').forEach(x=>x.classList.remove('active'));node.classList.add('active');
- $('#inspection').innerHTML=`<span class="tag">${sys.role.toUpperCase()}</span><h4>${name}</h4><p>${sys.text}</p><div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line2)"><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:4px"><span style="color:var(--dim)">AUTONOMY</span><span style="color:var(--gold2)">${val}%</span></div><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:4px"><span style="color:var(--dim)">PREFERRED</span><span>${cfg.preferred}%</span></div><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:8px"><span style="color:var(--dim)">STATUS</span><span style="color:${tension>20?'var(--red)':tension>10?'var(--gold2)':'var(--green)'}">${status}</span></div>${tension>15?`<p style="font-size:11px;color:var(--red);margin-top:6px;border-left:2px solid var(--red);padding-left:8px">${cfg.resist}</p>`:''}</div>`;
+ var prodLink=sys.url?`<a href="${sys.url}" target="_blank" style="display:block;margin-top:10px;font:500 9px IBM Plex Mono,monospace;color:var(--gold2);letter-spacing:.1em;text-decoration:none">VIEW PRODUCT →</a>`:'';
+ $('#inspection').innerHTML=`<span class="tag">${sys.role.toUpperCase()}</span><h4>${name}</h4><p>${sys.text}</p>${prodLink}<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line2)"><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:4px"><span style="color:var(--dim)">AUTONOMY</span><span style="color:var(--gold2)">${val}%</span></div><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:4px"><span style="color:var(--dim)">PREFERRED</span><span>${cfg.preferred}%</span></div><div style="display:flex;justify-content:space-between;font:400 8px 'IBM Plex Mono',monospace;margin-bottom:8px"><span style="color:var(--dim)">STATUS</span><span style="color:${tension>20?'var(--red)':tension>10?'var(--gold2)':'var(--green)'}">${status}</span></div>${tension>15?`<p style="font-size:11px;color:var(--red);margin-top:6px;border-left:2px solid var(--red);padding-left:8px">${cfg.resist}</p>`:''}</div>`;
  // recalculate everything
  state.scores=baseScores();renderFormation();updateBudget();updateTension();
 }
@@ -880,6 +882,13 @@ $('#download-json').onclick=()=>{
  md+=state.hashes.map(function(h){return '| '+h.type+' | `'+h.hash.substring(0,12)+'...` | '+h.at+' |'}).join('\n')+'\n\n';
  md+='**Terminal Hash:** `'+state.terminalHash+'`\n\n';
  md+='---\n\n';
+ md+='---\n\n';
+ md+='## Product Reference\n\n';
+ md+='Each system in this institutional record is a live product. Explore the full portfolio:\n\n';
+ md+='| System | Role | Product |\n|---|---|---|\n';
+ md+=Object.entries(SYSTEMS).map(function(kv){return '| **'+kv[0]+'** | '+kv[1].role+' | ['+kv[1].url+']('+kv[1].url+') |'}).join('\n')+'\n\n';
+ md+='**Full Portfolio Briefing:** [portfolio-briefing-zeta.vercel.app](https://portfolio-briefing-zeta.vercel.app/)\n\n';
+ md+='---\n\n';
  md+='*Generated by The Institution. Tamper-evident institutional record.*\n';
 
  // render to styled HTML and open print dialog
@@ -910,6 +919,7 @@ $('#download-json').onclick=()=>{
   .replace(/^---$/gm,'<hr>')
   .replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>')
   .replace(/`([^`]+)`/g,'<code>$1</code>')
+  .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" style="color:#6d4f0c">$1</a>')
   .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
   .replace(/\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)*)/g,function(m,hdr,rows){
    var ths=hdr.split('|').filter(function(c){return c.trim()}).map(function(c){return '<th>'+c.trim()+'</th>'}).join('');
